@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@tabler/icons-vue':
+        specifier: ^3.5.0
+        version: 3.5.0(vue@3.4.27)
       vue:
         specifier: ^3.4.21
         version: 3.4.27
@@ -309,6 +312,14 @@ packages:
     resolution: {integrity: sha512-UOo5FdvOL0+eIVTgS4tIdbW+TtnBLWg1YBCcU2KWM7nuNwRz9bksDX1bekJJCpu25N1DVWaCwnT39dVQxzqS8g==}
     cpu: [x64]
     os: [win32]
+
+  '@tabler/icons-vue@3.5.0':
+    resolution: {integrity: sha512-55gxPKpT8rk2SoYh82tHfTAuMah4W2cseMabKY1WchRHe4Hqd2JgKFxlvI4na2YVeByaG1KgMiIrmkDz5NRyqQ==}
+    peerDependencies:
+      vue: '>=3.0.1'
+
+  '@tabler/icons@3.5.0':
+    resolution: {integrity: sha512-I53dC3ZSHQ2MZFGvDYJelfXm91L2bTTixS4w5jTAulLhHbCZso5Bih4Rk/NYZxlngLQMKHvEYwZQ+6w/WluKiA==}
 
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
@@ -1005,6 +1016,13 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.18.0':
     optional: true
+
+  '@tabler/icons-vue@3.5.0(vue@3.4.27)':
+    dependencies:
+      '@tabler/icons': 3.5.0
+      vue: 3.4.27
+
+  '@tabler/icons@3.5.0': {}
 
   '@types/estree@1.0.5': {}
 

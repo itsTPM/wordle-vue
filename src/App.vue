@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { Toaster, toast } from "vue-sonner";
 
+import Keyboard from "./components/Keyboard.vue";
 import { todayWord, checkWord } from "./words.js";
 
 const letterLimit = 5;
@@ -17,6 +18,18 @@ const isGameLost = ref(false);
 guesses.value = Array(rows).fill("");
 guessesComparsion.value = Array(rows).fill("");
 
+const addLetter = (letter) => {
+  if (inputWord.value.length < letterLimit) {
+    inputWord.value += letter.toLowerCase();
+    guesses.value[currentGuess.value] = inputWord.value;
+  }
+};
+
+const removeLastLetter = () => {
+  inputWord.value = inputWord.value.slice(0, -1);
+  guesses.value[currentGuess.value] = inputWord.value;
+};
+
 window.addEventListener("keydown", (e) => {
   if (isGameWon.value || isGameLost.value) {
     return;
@@ -28,31 +41,28 @@ window.addEventListener("keydown", (e) => {
   const isLetter = key.toLowerCase() != key.toUpperCase() && key.length === 1;
 
   if (isLetter) {
-    if (inputWord.value.length < letterLimit) {
-      inputWord.value += key.toLowerCase();
-      guesses.value[currentGuess.value] = inputWord.value;
-    }
+    addLetter(key);
   } else {
     if (key === "Backspace") {
-      inputWord.value = inputWord.value.slice(0, -1);
-      guesses.value[currentGuess.value] = inputWord.value;
+      removeLastLetter();
     }
     if (key === "Enter") {
-      if (inputWord.value.length === letterLimit) {
-        if (!checkWord(inputWord.value)) {
-          toast("Not a valid word!");
-          return;
-        }
-
-        makeGuess();
-      } else {
-        toast("Not enough letters!");
-      }
+      makeGuess();
     }
   }
 });
 
 const makeGuess = () => {
+  if (inputWord.value.length != letterLimit) {
+    toast("Not enough letters!");
+    return;
+  }
+
+  if (!checkWord(inputWord.value)) {
+    toast("Not a valid word!");
+    return;
+  }
+
   const guess = inputWord.value;
   const target = word;
   inputWord.value = "";
@@ -128,7 +138,7 @@ const makeGuess = () => {
   </div>
 
   <div
-    class="p-4 rounded-md border shadow-sm flex flex-col gap-4 max-w-[calc(100vw-2rem)]"
+    class="p-4 rounded-md border shadow-sm flex flex-col gap-4 max-w-[calc(100vw-2rem)] items-center"
   >
     <h1 class="text-center text-3xl font-['Lato']">wordle-vue</h1>
 
@@ -154,5 +164,11 @@ const makeGuess = () => {
         </span>
       </div>
     </div>
+
+    <Keyboard
+      @addLetter="(letter) => addLetter(letter)"
+      @makeGuess="makeGuess"
+      @removeLastLetter="removeLastLetter"
+    ></Keyboard>
   </div>
 </template>

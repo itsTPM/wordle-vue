@@ -6,7 +6,7 @@
   html,
   body,
   #app {
-    @apply h-full min-h-screen;
+    @apply min-h-screen;
   }
 
   #app {
