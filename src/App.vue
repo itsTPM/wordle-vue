@@ -116,22 +116,24 @@ const makeGuess = () => {
     <p class="text-3xl text-center font-semibold">Congratulations! You won!</p>
   </div>
 
-  <div class="p-4 rounded-xl border m-4 shadow-sm">
-    <h1 class="text-center text-2xl">wordle-vue</h1>
+  <div
+    class="italic p-2 border rounded-md lg:w-[20rem] lg:m-auto bg-gray-50 lg:absolute top-4 left-4 my-4 w-[22rem] max-w-[calc(100vw-2rem)]"
+  >
+    <p>word of the day: {{ word }}</p>
+    <p>input word: {{ inputWord }}</p>
+    <p>current guess: {{ currentGuess }}</p>
+    <p>guesses: {{ guesses }}</p>
+    <p>guesses comparsion: {{ guessesComparsion }}</p>
+    <p>game state: {{ isGameWon ? "won" : isGameLost ? "lost" : "playing" }}</p>
+  </div>
 
-    <div>
-      <p class="italic">word of the day: {{ word }}</p>
-      <p class="italic">input word: {{ inputWord }}</p>
-      <p class="italic">current guess: {{ currentGuess }}</p>
-      <p class="italic">guesses: {{ guesses }}</p>
-      <p class="italic">guesses comparsion: {{ guessesComparsion }}</p>
-      <p class="italic">
-        game state: {{ isGameWon ? "won" : isGameLost ? "lost" : "playing" }}
-      </p>
-    </div>
+  <div
+    class="p-4 rounded-md border shadow-sm flex flex-col gap-4 max-w-[calc(100vw-2rem)]"
+  >
+    <h1 class="text-center text-3xl font-['Lato']">wordle-vue</h1>
 
-    <div class="w-fit h-96 flex flex-col gap-2">
-      <div class="w-fit h-full flex gap-2" v-for="row in rows">
+    <div class="w-80 h-96 flex flex-col gap-2">
+      <div class="w-full h-full flex gap-2" v-for="row in rows">
         <span
           v-for="letter in letterLimit"
           class="bg-gray-50 border-2 h-full aspect-square flex items-center justify-center text-center text-3xl uppercase font-bold transition-all duration-300"
