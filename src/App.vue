@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { Toaster, toast } from "vue-sonner";
 
 import Keyboard from "./components/Keyboard.vue";
@@ -7,13 +7,15 @@ import { todayWord, checkWord } from "./words.js";
 
 const letterLimit = 5;
 const rows = 6;
-const word = todayWord();
+const word = ref("");
 const inputWord = ref("");
 const guesses = ref([]);
 const guessesComparsion = ref([]);
 const currentGuess = ref(0);
 const isGameWon = ref(false);
 const isGameLost = ref(false);
+
+const currentMode = ref(""); // 'wordOfTheDay' or 'custom'
 
 guesses.value = Array(rows).fill("");
 guessesComparsion.value = Array(rows).fill("");
@@ -64,7 +66,7 @@ const makeGuess = () => {
   }
 
   const guess = inputWord.value;
-  const target = word;
+  const target = word.value;
   inputWord.value = "";
 
   const result = Array(letterLimit).fill("N");
@@ -110,6 +112,43 @@ const makeGuess = () => {
 
   currentGuess.value++;
 };
+
+onMounted(() => {
+  let urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has("word") && urlParams.get("word") != "") {
+    currentMode.value = "custom";
+    try {
+      word.value = atob(urlParams.get("word"));
+    } catch (e) {
+      toast(
+        "Error decoding the custom word parameter. Game mode switched to word of the day",
+        {
+          type: "error",
+          duration: 3000,
+        }
+      );
+
+      currentMode.value = "wordOfTheDay";
+      word.value = todayWord();
+      return;
+    }
+    if (atob(urlParams.get("word")).length != letterLimit) {
+      toast(
+        `Custom word must be exactly ${letterLimit} letters long. Game mode switched to word of the day`,
+        {
+          type: "error",
+          duration: 3000,
+        }
+      );
+
+      currentMode.value = "wordOfTheDay";
+      word.value = todayWord();
+    }
+  } else {
+    currentMode.value = "wordOfTheDay";
+    word.value = todayWord();
+  }
+});
 </script>
 
 <template>
@@ -129,7 +168,8 @@ const makeGuess = () => {
   <div
     class="italic p-2 border rounded-md lg:w-[20rem] lg:m-auto bg-gray-50 lg:absolute top-4 left-4 my-4 w-[22rem] max-w-[calc(100vw-2rem)]"
   >
-    <p>word of the day: {{ word }}</p>
+    <p>word to guess: {{ word }}</p>
+    <p>game mode: {{ currentMode }}</p>
     <p>input word: {{ inputWord }}</p>
     <p>current guess: {{ currentGuess }}</p>
     <p>guesses: {{ guesses }}</p>
@@ -141,6 +181,12 @@ const makeGuess = () => {
     class="p-4 rounded-md border shadow-sm flex flex-col gap-4 max-w-[calc(100vw-2rem)] items-center"
   >
     <h1 class="text-center text-3xl font-['Lato']">wordle-vue</h1>
+    <span class="uppercase px-6 py-2 bg-gray-500 text-white font-bold text-xs">
+      <template v-if="currentMode === 'wordOfTheDay'">
+        Word of the day
+      </template>
+      <template v-else-if="currentMode === 'custom'"> Custom word</template>
+    </span>
 
     <div class="w-80 h-96 flex flex-col gap-2">
       <div class="w-full h-full flex gap-2" v-for="row in rows">
