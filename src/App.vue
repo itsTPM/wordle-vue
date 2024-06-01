@@ -4,6 +4,7 @@ import { Toaster, toast } from "vue-sonner";
 
 import Keyboard from "./components/Keyboard.vue";
 import { todayWord, checkWord } from "./words.js";
+import { IconX } from "@tabler/icons-vue";
 
 const letterLimit = 5;
 const rows = 6;
@@ -16,6 +17,28 @@ const isGameWon = ref(false);
 const isGameLost = ref(false);
 
 const currentMode = ref(""); // 'wordOfTheDay' or 'custom'
+
+const customWord = ref("");
+const customLink = ref("");
+
+const makeCustomLink = () => {
+  const b64Word = btoa(customWord.value);
+  customLink.value = `${window.location.origin}/?word=${b64Word}`;
+};
+
+const copyCustomLink = async () => {
+  try {
+    await navigator.clipboard.writeText(customLink.value);
+    toast("Link copied!", { type: "success" });
+  } catch (err) {
+    toast("Cannot copy", { type: "error" });
+  }
+};
+
+const resetCustomDialog = () => {
+  customWord.value = "";
+  customLink.value = "";
+};
 
 guesses.value = Array(rows).fill("");
 guessesComparsion.value = Array(rows).fill("");
@@ -181,12 +204,100 @@ onMounted(() => {
     class="p-4 rounded-md border shadow-sm flex flex-col gap-4 max-w-[calc(100vw-2rem)] items-center"
   >
     <h1 class="text-center text-3xl font-['Lato']">wordle-vue</h1>
-    <span class="uppercase px-6 py-2 bg-gray-500 text-white font-bold text-xs">
-      <template v-if="currentMode === 'wordOfTheDay'">
-        Word of the day
-      </template>
-      <template v-else-if="currentMode === 'custom'"> Custom word</template>
-    </span>
+    <div class="flex">
+      <span
+        class="uppercase px-6 py-2 bg-gray-500 text-white font-bold text-xs"
+      >
+        <template v-if="currentMode === 'wordOfTheDay'">
+          Word of the day
+        </template>
+        <template v-else-if="currentMode === 'custom'"> Custom word</template>
+      </span>
+
+      <DialogRoot>
+        <DialogTrigger
+          class="uppercase px-6 py-2 bg-gray-200 font-bold text-xs border-r border-y border-gray-300 text-gray-800 hover:bg-gray-300 hover:border-gray-400 hover:text-gray-700 select-none transition-colors cursor-pointer"
+        >
+          Make wordle with your word!
+        </DialogTrigger>
+        <DialogPortal>
+          <DialogOverlay
+            class="fixed inset-0 z-50 data-[state=open]:animate-overlayOpen data-[state=open]:bg-black/50 data-[state=open]:backdrop-blur-md data-[state=closed]:animate-overlayClose"
+          ></DialogOverlay>
+          <DialogContent
+            @keydown.stop
+            class="fixed left-1/2 top-1/2 z-50 w-[25rem] max-w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 border p-3 shadow-xl bg-white rounded-md data-[state=open]:animate-dialogShow focus:outline outline-2 outline-offset-2 outline-blue-400"
+          >
+            <DialogClose
+              class="hover:text-gray-600 transition-colors duration-300 absolute top-3 right-3"
+            >
+              <IconX class="w-5 h-5" stroke-width="2"></IconX>
+            </DialogClose>
+
+            <DialogTitle class="text-xl text-center mt-4"
+              >Make wordle with your word!
+            </DialogTitle>
+            <template v-if="customLink == ''">
+              <DialogDescription class="text-gray-800 py-2">
+                Enter any word and get a special link to share with your friend
+              </DialogDescription>
+              <form
+                class="grid w-full gap-2 grid-rows-1 grid-cols-4"
+                @submit.prevent="makeCustomLink"
+              >
+                <input
+                  placeholder="Your word"
+                  type="text"
+                  name="customWord"
+                  v-model="customWord"
+                  required
+                  maxlength="5"
+                  minlength="5"
+                  class="px-4 w-full py-2 bg-gray-50 border rounded-md col-span-3"
+                />
+                <button
+                  class="rounded-md p-2 border bg-[#5f9f55] text-white border-[#45873b] hover:bg-[#86ae80] hover:border-[#799672] transition-colors"
+                >
+                  Get link
+                </button>
+              </form>
+              <p class="text-xs mt-1">
+                You can use words that aren't even in the dictionary.
+              </p>
+            </template>
+            <template v-else>
+              <DialogDescription class="text-gray-800 py-2">
+                Custom link for your word
+              </DialogDescription>
+              <div class="grid grid-rows-1 grid-cols-4 gap-2 w-full">
+                <input
+                  type="text"
+                  disabled
+                  name="customLink"
+                  v-model="customLink"
+                  class="px-4 w-full py-2 bg-gray-50 border rounded-md col-span-3 text-gray-400"
+                />
+                <button
+                  class="rounded-md p-2 border bg-[#6a85c9] text-white border-[#405895] hover:bg-[#8699c7] hover:border-[#646f8b] transition-colors"
+                  @click="copyCustomLink"
+                >
+                  Copy
+                </button>
+              </div>
+              <p class="text-xs text-gray-800 mt-2">
+                <button
+                  @click="resetCustomDialog"
+                  class="underline hover:text-gray-400 hover:underline-offset-4 underline-offset-2 transition-all"
+                >
+                  Click here
+                </button>
+                to reset this dialog and make link for another word
+              </p>
+            </template>
+          </DialogContent>
+        </DialogPortal>
+      </DialogRoot>
+    </div>
 
     <div class="w-80 h-96 flex flex-col gap-2">
       <div class="w-full h-full flex gap-2" v-for="row in rows">
