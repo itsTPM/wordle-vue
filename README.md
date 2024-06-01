@@ -14,7 +14,7 @@ This is my personal learning project, not claiming to be fully compliant with th
 ### Features & ToDo
 
 - [x] Word of the day mode
-- [ ] Custom word mode
+- [x] Custom word mode
 - [x] Word validation with pre-defined list
 - [x] Highlighting of letters according to their presence and position in the word
 - [x] On-screen keyboard
