@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [
     vue(),
     Components({
-      resolvers: [RadixVueResolver()],
+      resolvers: [RadixVueResolver({ prefix: "r" })],
     }),
   ],
   resolve: {

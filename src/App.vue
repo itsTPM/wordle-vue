@@ -3,8 +3,14 @@ import { ref, onMounted } from "vue";
 import { Toaster, toast } from "vue-sonner";
 
 import Keyboard from "./components/Keyboard.vue";
+import {
+  Dialog,
+  DialogClose,
+  DialogTitle,
+  DialogDescription,
+  DialogContent,
+} from "./components/dialog";
 import { todayWord, checkWord } from "./words.js";
-import { IconX } from "@tabler/icons-vue";
 
 const letterLimit = 5;
 const rows = 6;
@@ -214,31 +220,20 @@ onMounted(() => {
         <template v-else-if="currentMode === 'custom'"> Custom word</template>
       </span>
 
-      <DialogRoot>
-        <DialogTrigger
-          class="uppercase px-6 py-2 bg-gray-200 font-bold text-xs border-r border-y border-gray-300 text-gray-800 hover:bg-gray-300 hover:border-gray-400 hover:text-gray-700 select-none transition-colors cursor-pointer"
-        >
-          Make wordle with your word!
-        </DialogTrigger>
-        <DialogPortal>
-          <DialogOverlay
-            class="fixed inset-0 z-50 data-[state=open]:animate-overlayOpen data-[state=open]:bg-black/50 data-[state=open]:backdrop-blur-md data-[state=closed]:animate-overlayClose"
-          ></DialogOverlay>
-          <DialogContent
-            @keydown.stop
-            class="fixed left-1/2 top-1/2 z-50 w-[25rem] max-w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 border p-3 shadow-xl bg-white rounded-md data-[state=open]:animate-dialogShow focus:outline outline-2 outline-offset-2 outline-blue-400"
+      <Dialog>
+        <template #trigger>
+          <r-DialogTrigger
+            class="uppercase px-6 py-2 bg-gray-200 font-bold text-xs border-r border-y border-gray-300 text-gray-800 hover:bg-gray-300 hover:border-gray-400 hover:text-gray-700 select-none transition-colors cursor-pointer"
           >
-            <DialogClose
-              class="hover:text-gray-600 transition-colors duration-300 absolute top-3 right-3"
-            >
-              <IconX class="w-5 h-5" stroke-width="2"></IconX>
-            </DialogClose>
-
-            <DialogTitle class="text-xl text-center mt-4"
-              >Make wordle with your word!
-            </DialogTitle>
+            Make wordle with your word!
+          </r-DialogTrigger>
+        </template>
+        <template #content>
+          <DialogContent>
+            <DialogClose></DialogClose>
+            <DialogTitle>Make wordle with your word!</DialogTitle>
             <template v-if="customLink == ''">
-              <DialogDescription class="text-gray-800 py-2">
+              <DialogDescription>
                 Enter any word and get a special link to share with your friend
               </DialogDescription>
               <form
@@ -266,9 +261,7 @@ onMounted(() => {
               </p>
             </template>
             <template v-else>
-              <DialogDescription class="text-gray-800 py-2">
-                Custom link for your word
-              </DialogDescription>
+              <DialogDescription> Custom link for your word </DialogDescription>
               <div class="grid grid-rows-1 grid-cols-4 gap-2 w-full">
                 <input
                   type="text"
@@ -295,8 +288,8 @@ onMounted(() => {
               </p>
             </template>
           </DialogContent>
-        </DialogPortal>
-      </DialogRoot>
+        </template>
+      </Dialog>
     </div>
 
     <div class="w-80 h-96 flex flex-col gap-2">
