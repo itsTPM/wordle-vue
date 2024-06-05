@@ -17,7 +17,7 @@ const rows = 6;
 const word = ref("");
 const inputWord = ref("");
 const guesses = ref([]);
-const guessesComparsion = ref([]);
+const guessesComparison = ref([]);
 const currentGuess = ref(0);
 const isGameWon = ref(false);
 const isGameLost = ref(false);
@@ -47,7 +47,7 @@ const resetCustomDialog = () => {
 };
 
 guesses.value = Array(rows).fill("");
-guessesComparsion.value = Array(rows).fill("");
+guessesComparison.value = Array(rows).fill("");
 
 const addLetter = (letter) => {
   if (inputWord.value.length < letterLimit) {
@@ -127,7 +127,7 @@ const makeGuess = () => {
   }
 
   guesses.value[currentGuess.value] = guess;
-  guessesComparsion.value[currentGuess.value] = result.join("");
+  guessesComparison.value[currentGuess.value] = result.join("");
 
   if (guess === target) {
     toast("You won!", { type: "success" });
@@ -202,7 +202,7 @@ onMounted(() => {
     <p>input word: {{ inputWord }}</p>
     <p>current guess: {{ currentGuess }}</p>
     <p>guesses: {{ guesses }}</p>
-    <p>guesses comparsion: {{ guessesComparsion }}</p>
+    <p>guesses comparison: {{ guessesComparison }}</p>
     <p>game state: {{ isGameWon ? "won" : isGameLost ? "lost" : "playing" }}</p>
   </div>
 
@@ -298,13 +298,13 @@ onMounted(() => {
           v-for="letter in letterLimit"
           class="bg-gray-50 border-2 h-full aspect-square flex items-center justify-center text-center text-3xl uppercase font-bold transition-all duration-300"
           :class="[
-            guessesComparsion[row - 1]?.charAt(letter - 1) === 'N'
+            guessesComparison[row - 1]?.charAt(letter - 1) === 'N'
               ? ['!bg-gray-500', 'text-white', 'border-gray-500']
               : '',
-            guessesComparsion[row - 1]?.charAt(letter - 1) === 'Y'
+            guessesComparison[row - 1]?.charAt(letter - 1) === 'Y'
               ? ['!bg-emerald-500', 'text-white', 'border-emerald-500']
               : '',
-            guessesComparsion[row - 1]?.charAt(letter - 1) === 'X'
+            guessesComparison[row - 1]?.charAt(letter - 1) === 'X'
               ? ['!bg-yellow-500', 'text-white', 'border-yellow-500']
               : '',
             guesses[row - 1]?.charAt(letter - 1) ? ['animate-typing'] : '',
