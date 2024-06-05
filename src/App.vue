@@ -69,7 +69,7 @@ window.addEventListener("keydown", (e) => {
   const key = e.key;
 
   // this will not work with chinese, japanese, hebrew, arabic and other languages that do not have uppercase/lowercase
-  const isLetter = key.toLowerCase() != key.toUpperCase() && key.length === 1;
+  const isLetter = key.toLowerCase() !== key.toUpperCase() && key.length === 1;
 
   if (isLetter) {
     addLetter(key);
@@ -84,7 +84,7 @@ window.addEventListener("keydown", (e) => {
 });
 
 const makeGuess = () => {
-  if (inputWord.value.length != letterLimit) {
+  if (inputWord.value.length !== letterLimit) {
     toast("Not enough letters!");
     return;
   }
@@ -144,7 +144,7 @@ const makeGuess = () => {
 
 onMounted(() => {
   let urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.has("word") && urlParams.get("word") != "") {
+  if (urlParams.has("word") && urlParams.get("word") !== "") {
     currentMode.value = "custom";
     try {
       word.value = atob(urlParams.get("word"));
@@ -161,7 +161,7 @@ onMounted(() => {
       word.value = todayWord();
       return;
     }
-    if (atob(urlParams.get("word")).length != letterLimit) {
+    if (atob(urlParams.get("word")).length !== letterLimit) {
       toast(
         `Custom word must be exactly ${letterLimit} letters long. Game mode switched to word of the day`,
         {
@@ -232,7 +232,7 @@ onMounted(() => {
           <DialogContent>
             <DialogClose></DialogClose>
             <DialogTitle>Make wordle with your word!</DialogTitle>
-            <template v-if="customLink == ''">
+            <template v-if="customLink === ''">
               <DialogDescription>
                 Enter any word and get a special link to share with your friend
               </DialogDescription>
