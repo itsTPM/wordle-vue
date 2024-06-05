@@ -13,5 +13,5 @@ export const todayWord = () => {
 
 // check if the word is in the list
 export const checkWord = (word) => {
-  return allWords.includes(word) ? true : false;
+  return !!allWords.includes(word);
 };
