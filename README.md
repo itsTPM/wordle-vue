@@ -21,7 +21,7 @@ This is my personal learning project, not claiming to be fully compliant with th
 - [ ] Mobile responsive
 - [ ] Game settings
 - [ ] Local statistics
-- [ ] Light/Dark themes
+- [x] Light/Dark themes
 - [ ] Internationalization
   - [x] English
   - [ ] Русский
