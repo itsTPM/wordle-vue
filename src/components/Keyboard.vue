@@ -21,7 +21,7 @@ const keyboard = [
     >
       <KeyboardButton
         v-if="keyboard.indexOf(row) === keyboard.length - 1"
-        class="bg-zinc-200 hover:bg-zinc-300 aspect-[1.5/1]"
+        class="bg-secondary hover:bg-secondary-hover aspect-[1.5/1] text-secondary-foreground"
         @click="$emit('removeLastLetter')"
       >
         <IconBackspace
@@ -38,7 +38,7 @@ const keyboard = [
       </KeyboardButton>
       <KeyboardButton
         v-if="keyboard.indexOf(row) === keyboard.length - 1"
-        class="bg-zinc-200 hover:bg-zinc-300 aspect-[1.5/1]"
+        class="bg-secondary hover:bg-secondary-hover aspect-[1.5/1] text-secondary-foreground"
         @click="$emit('makeGuess')"
       >
         <IconCornerDownLeft class="w-8" stroke-width="1.5"></IconCornerDownLeft>

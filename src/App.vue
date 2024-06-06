@@ -195,7 +195,7 @@ onMounted(() => {
   </div>
 
   <div
-    class="italic p-2 border rounded-md lg:w-[20rem] lg:m-auto bg-gray-50 lg:absolute top-4 left-4 my-4 w-[22rem] max-w-[calc(100vw-2rem)]"
+    class="italic p-2 border rounded-md lg:w-[20rem] lg:m-auto bg-card lg:absolute top-4 left-4 my-4 w-[22rem] max-w-[calc(100vw-2rem)]"
   >
     <p>word to guess: {{ word }}</p>
     <p>game mode: {{ currentMode }}</p>
@@ -212,7 +212,7 @@ onMounted(() => {
     <h1 class="text-center text-3xl font-['Lato']">wordle-vue</h1>
     <div class="flex">
       <span
-        class="uppercase px-6 py-2 bg-gray-500 text-white font-bold text-xs"
+        class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs"
       >
         <template v-if="currentMode === 'wordOfTheDay'">
           Word of the day
@@ -223,7 +223,7 @@ onMounted(() => {
       <Dialog>
         <template #trigger>
           <r-DialogTrigger
-            class="uppercase px-6 py-2 bg-gray-200 font-bold text-xs border-r border-y border-gray-300 text-gray-800 hover:bg-gray-300 hover:border-gray-400 hover:text-gray-700 select-none transition-colors cursor-pointer"
+            class="uppercase px-6 py-2 bg-primary font-bold text-xs border-r border-y text-primary-foreground hover:bg-secondary-hover select-none transition-colors cursor-pointer"
           >
             Make wordle with your word!
           </r-DialogTrigger>
@@ -248,7 +248,7 @@ onMounted(() => {
                   required
                   maxlength="5"
                   minlength="5"
-                  class="px-4 w-full py-2 bg-gray-50 border rounded-md col-span-3"
+                  class="px-4 w-full py-2 bg-input border rounded-md col-span-3"
                 />
                 <button
                   class="rounded-md p-2 border bg-[#5f9f55] text-white border-[#45873b] hover:bg-[#86ae80] hover:border-[#799672] transition-colors"
@@ -256,7 +256,7 @@ onMounted(() => {
                   Get link
                 </button>
               </form>
-              <p class="text-xs mt-1">
+              <p class="text-xs mt-1 text-black/50 dark:text-white/50">
                 You can use words that aren't even in the dictionary.
               </p>
             </template>
@@ -268,7 +268,7 @@ onMounted(() => {
                   disabled
                   name="customLink"
                   v-model="customLink"
-                  class="px-4 w-full py-2 bg-gray-50 border rounded-md col-span-3 text-gray-400"
+                  class="px-4 w-full py-2 bg-input border rounded-md col-span-3 text-gray-400"
                 />
                 <button
                   class="rounded-md p-2 border bg-[#6a85c9] text-white border-[#405895] hover:bg-[#8699c7] hover:border-[#646f8b] transition-colors"
@@ -277,10 +277,10 @@ onMounted(() => {
                   Copy
                 </button>
               </div>
-              <p class="text-xs text-gray-800 mt-2">
+              <p class="text-xs text-black/50 dark:text-white/50 mt-2">
                 <button
                   @click="resetCustomDialog"
-                  class="underline hover:text-gray-400 hover:underline-offset-4 underline-offset-2 transition-all"
+                  class="underline hover:text-secondary-hover hover:underline-offset-4 underline-offset-2 transition-all"
                 >
                   Click here
                 </button>
@@ -296,7 +296,7 @@ onMounted(() => {
       <div class="w-full h-full flex gap-2" v-for="row in rows">
         <span
           v-for="letter in letterLimit"
-          class="bg-gray-50 border-2 h-full aspect-square flex items-center justify-center text-center text-3xl uppercase font-bold transition-all duration-300"
+          class="bg-gray-50 dark:bg-white/5 border-2 h-full aspect-square flex items-center justify-center text-center text-3xl uppercase font-bold transition-all duration-300"
           :class="[
             guessesComparison[row - 1]?.charAt(letter - 1) === 'N'
               ? ['!bg-gray-500', 'text-white', 'border-gray-500']

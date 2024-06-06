@@ -9,7 +9,47 @@
     @apply min-h-screen;
   }
 
+  body {
+    @apply bg-background text-foreground;
+  }
+
   #app {
     @apply flex flex-col items-center justify-center;
+  }
+
+  /*  Light theme*/
+  :root {
+    --background: #fff;
+    --foreground: #111;
+
+    --card: #f9fafb;
+    --input: #f9fafb;
+    --border: #e5e7eb;
+
+    --primary: #f3f4f6;
+    --primary-foreground: #111;
+    --primary-hover: #e5e7eb;
+
+    --secondary: #e5e7eb;
+    --secondary-foreground: #333;
+    --secondary-hover: #d1d5db;
+  }
+
+  /*  Dark theme*/
+  .dark {
+    --background: #111;
+    --foreground: #fff;
+
+    --card: #1d1d1d;
+    --input: #1d1d1d;
+    --border: #333;
+
+    --primary: #1e1e1e;
+    --primary-foreground: #f3f4f6;
+    --primary-hover: #333;
+
+    --secondary: #333;
+    --secondary-foreground: #f3f4f6;
+    --secondary-hover: #444;
   }
 }
