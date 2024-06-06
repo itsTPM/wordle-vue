@@ -11,6 +11,8 @@ import {
   DialogContent,
 } from "./components/dialog";
 import { todayWord, checkWord } from "./words.js";
+import { IconMoon } from "@tabler/icons-vue";
+import { IconSun } from "@tabler/icons-vue";
 
 const letterLimit = 5;
 const rows = 6;
@@ -26,6 +28,18 @@ const currentMode = ref(""); // 'wordOfTheDay' or 'custom'
 
 const customWord = ref("");
 const customLink = ref("");
+
+const theme = ref("light");
+
+const toggleTheme = () => {
+  if (theme.value == "light") {
+    theme.value = "dark";
+    document.body.classList.add("dark");
+  } else {
+    theme.value = "light";
+    document.body.classList.remove("dark");
+  }
+};
 
 const makeCustomLink = () => {
   const b64Word = btoa(customWord.value);
@@ -195,7 +209,7 @@ onMounted(() => {
   </div>
 
   <div
-    class="italic p-2 border rounded-md lg:w-[20rem] lg:m-auto bg-card lg:absolute top-4 left-4 my-4 w-[22rem] max-w-[calc(100vw-2rem)]"
+    class="italic p-2 border rounded-md lg:w-[20rem] lg:m-auto bg-card lg:absolute top-4 left-4 my-4 w-[22rem] max-w-[calc(100vw-2rem)] transition-colors"
   >
     <p>word to guess: {{ word }}</p>
     <p>game mode: {{ currentMode }}</p>
@@ -207,12 +221,27 @@ onMounted(() => {
   </div>
 
   <div
-    class="p-4 rounded-md border shadow-sm flex flex-col gap-4 max-w-[calc(100vw-2rem)] items-center"
+    class="p-4 rounded-md border shadow-sm flex flex-col gap-4 max-w-[calc(100vw-2rem)] items-center relative"
   >
+    <div
+      class="w-10 h-10 absolute top-2 right-2 rounded-md overflow-clip hover:bg-primary text-black/75 dark:text-white/75 cursor-pointer transition-colors"
+      @click="toggleTheme"
+    >
+      <IconMoon
+        class="w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+        stroke-width="2"
+        v-if="theme === 'light'"
+      ></IconMoon>
+      <IconSun
+        class="w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+        stroke-width="2"
+        v-else
+      ></IconSun>
+    </div>
     <h1 class="text-center text-3xl font-['Lato']">wordle-vue</h1>
     <div class="flex">
       <span
-        class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs"
+        class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs transition-colors"
       >
         <template v-if="currentMode === 'wordOfTheDay'">
           Word of the day
