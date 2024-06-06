@@ -35,9 +35,11 @@ const toggleTheme = () => {
   if (theme.value == "light") {
     theme.value = "dark";
     document.body.classList.add("dark");
+    localStorage.setItem("theme", "dark");
   } else {
     theme.value = "light";
     document.body.classList.remove("dark");
+    localStorage.setItem("theme", "light");
   }
 };
 
@@ -157,6 +159,27 @@ const makeGuess = () => {
 };
 
 onMounted(() => {
+  // Theme detection
+  const localStorageTheme = window.localStorage.getItem("theme");
+  if (
+    localStorageTheme !== null &&
+    (localStorageTheme !== undefined) & (localStorageTheme !== "")
+  ) {
+    if (localStorageTheme == "dark") {
+      theme.value = "dark";
+      document.body.classList.add("dark");
+    }
+  } else {
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      window.localStorage.setItem("theme", "dark");
+    } else {
+      window.localStorage.setItem("theme", "light");
+    }
+  }
+
   let urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("word") && urlParams.get("word") !== "") {
     currentMode.value = "custom";
