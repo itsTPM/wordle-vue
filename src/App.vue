@@ -10,6 +10,8 @@ import {
   DialogDescription,
   DialogContent,
 } from "./components/dialog";
+import Button from "./components/Button.vue";
+import Input from "./components/Input.vue";
 import { todayWord, checkWord } from "./words.js";
 import { IconMoon } from "@tabler/icons-vue";
 import { IconSun } from "@tabler/icons-vue";
@@ -275,7 +277,7 @@ onMounted(() => {
       <Dialog>
         <template #trigger>
           <r-DialogTrigger
-            class="uppercase px-6 py-2 bg-primary font-bold text-xs border-r border-y text-primary-foreground hover:bg-secondary-hover select-none transition-colors cursor-pointer"
+            class="uppercase px-6 py-2 bg-primary font-bold text-xs border-r border-y text-primary-foreground hover:bg-secondary-hover select-none transition-colors cursor-pointer focus:outline outline-2 outline-offset-2 outline-blue-400"
           >
             Make wordle with your word!
           </r-DialogTrigger>
@@ -292,7 +294,7 @@ onMounted(() => {
                 class="grid w-full gap-2 grid-rows-1 grid-cols-4"
                 @submit.prevent="makeCustomLink"
               >
-                <input
+                <Input
                   placeholder="Your word"
                   type="text"
                   name="customWord"
@@ -300,13 +302,13 @@ onMounted(() => {
                   required
                   maxlength="5"
                   minlength="5"
-                  class="px-4 w-full py-2 bg-input border rounded-md col-span-3"
+                  class="col-span-3"
                 />
-                <button
-                  class="rounded-md p-2 border bg-[#5f9f55] text-white border-[#45873b] hover:bg-[#86ae80] hover:border-[#799672] transition-colors"
+                <Button
+                  class="p-2 bg-[#5f9f55] text-white border-[#45873b] hover:bg-[#86ae80] hover:border-[#799672] border"
                 >
                   Get link
-                </button>
+                </Button>
               </form>
               <p class="text-xs mt-1 text-black/50 dark:text-white/50">
                 You can use words that aren't even in the dictionary.
@@ -315,27 +317,27 @@ onMounted(() => {
             <template v-else>
               <DialogDescription> Custom link for your word </DialogDescription>
               <div class="grid grid-rows-1 grid-cols-4 gap-2 w-full">
-                <input
+                <Input
                   type="text"
                   disabled
                   name="customLink"
                   v-model="customLink"
-                  class="px-4 w-full py-2 bg-input border rounded-md col-span-3 text-gray-400"
+                  class="col-span-3 text-gray-400"
                 />
-                <button
-                  class="rounded-md p-2 border bg-[#6a85c9] text-white border-[#405895] hover:bg-[#8699c7] hover:border-[#646f8b] transition-colors"
+                <Button
+                  class="p-2 bg-[#6a85c9] text-white border-[#405895] hover:bg-[#8699c7] hover:border-[#646f8b] border"
                   @click="copyCustomLink"
                 >
                   Copy
-                </button>
+                </Button>
               </div>
               <p class="text-xs text-black/50 dark:text-white/50 mt-2">
-                <button
+                <Button
                   @click="resetCustomDialog"
                   class="underline hover:text-secondary-hover hover:underline-offset-4 underline-offset-2 transition-all"
                 >
                   Click here
-                </button>
+                </Button>
                 to reset this dialog and make link for another word
               </p>
             </template>
