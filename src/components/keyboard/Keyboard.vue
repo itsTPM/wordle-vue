@@ -13,11 +13,11 @@ const keyboard = [
 </script>
 
 <template>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2 w-full">
     <div
       v-for="row in keyboard"
       :key="row"
-      class="flex gap-1 items-center justify-center"
+      class="flex gap-1 items-center justify-center w-full"
     >
       <KeyboardButton
         v-if="keyboard.indexOf(row) === keyboard.length - 1"

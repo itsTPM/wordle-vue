@@ -4,6 +4,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,vue}"],
   theme: {
     extend: {
+      screens: {
+        xs: "540px",
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

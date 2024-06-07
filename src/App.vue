@@ -246,7 +246,7 @@ onMounted(() => {
   </div>
 
   <div
-    class="p-4 rounded-md border shadow-sm flex flex-col gap-4 max-w-[calc(100vw-2rem)] items-center relative"
+    class="p-4 rounded-md border shadow-sm flex flex-col gap-4 max-w-[calc(100vw-1rem)] items-center relative w-full xs:w-[unset]"
   >
     <div
       class="w-10 h-10 absolute top-2 right-2 rounded-md overflow-clip hover:bg-primary text-black/75 dark:text-white/75 cursor-pointer transition-colors"
@@ -264,9 +264,9 @@ onMounted(() => {
       ></IconSun>
     </div>
     <h1 class="text-center text-3xl font-['Lato']">wordle-vue</h1>
-    <div class="flex">
+    <div class="flex flex-col xs:flex-row gap-2 xs:gap-0">
       <span
-        class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs transition-colors"
+        class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs transition-colors text-center"
       >
         <template v-if="currentMode === 'wordOfTheDay'">
           Word of the day
@@ -277,7 +277,7 @@ onMounted(() => {
       <Dialog>
         <template #trigger>
           <r-DialogTrigger
-            class="uppercase px-6 py-2 bg-primary font-bold text-xs border-r border-y text-primary-foreground hover:bg-secondary-hover select-none transition-colors cursor-pointer focus:outline outline-2 outline-offset-2 outline-blue-400"
+            class="uppercase px-6 py-2 bg-primary font-bold text-xs border-r border-y text-primary-foreground hover:bg-secondary-hover select-none transition-colors cursor-pointer focus:outline outline-2 outline-offset-2 outline-blue-400 border-l xs:border-l-0"
           >
             Make wordle with your word!
           </r-DialogTrigger>
@@ -346,11 +346,11 @@ onMounted(() => {
       </Dialog>
     </div>
 
-    <div class="w-80 h-96 flex flex-col gap-2">
+    <div class="w-full max-w-80 max-h-96 xs:w-80 xs:h-96 flex flex-col gap-2">
       <div class="w-full h-full flex gap-2" v-for="row in rows">
         <span
           v-for="letter in letterLimit"
-          class="bg-gray-50 dark:bg-white/5 border-2 h-full aspect-square flex items-center justify-center text-center text-3xl uppercase font-bold transition-all duration-300"
+          class="bg-gray-50 dark:bg-white/5 border-2 h-full aspect-square flex items-center justify-center text-center text-3xl uppercase font-bold transition-all duration-300 w-full"
           :class="[
             guessesComparison[row - 1]?.charAt(letter - 1) === 'N'
               ? ['!bg-gray-500', 'text-white', 'border-gray-500']
