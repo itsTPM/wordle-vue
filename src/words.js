@@ -1,4 +1,4 @@
-import allWords from "./allWords.json";
+import allWords from "@/allWords.json";
 
 export const todayWord = () => {
   const date = new Date();

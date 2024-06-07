@@ -2,17 +2,17 @@
 import { ref, onMounted } from "vue";
 import { Toaster, toast } from "vue-sonner";
 
-import Keyboard from "./components/Keyboard.vue";
+import Keyboard from "@/components/keyboard/Keyboard.vue";
 import {
   Dialog,
   DialogClose,
   DialogTitle,
   DialogDescription,
   DialogContent,
-} from "./components/dialog";
-import Button from "./components/Button.vue";
-import Input from "./components/Input.vue";
-import { todayWord, checkWord } from "./words.js";
+} from "@/components/dialog";
+import Button from "@/components/Button.vue";
+import Input from "@/components/Input.vue";
+import { todayWord, checkWord } from "@/words.js";
 import { IconMoon } from "@tabler/icons-vue";
 import { IconSun } from "@tabler/icons-vue";
 

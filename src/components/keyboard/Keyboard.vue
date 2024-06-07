@@ -1,7 +1,7 @@
 <script setup>
 import { IconBackspace, IconCornerDownLeft } from "@tabler/icons-vue";
 
-import KeyboardButton from "./KeyboardButton.vue";
+import KeyboardButton from "@/components/keyboard/KeyboardButton.vue";
 
 const emits = defineEmits(["addLetter", "makeGuess", "removeLastLetter"]);
 
