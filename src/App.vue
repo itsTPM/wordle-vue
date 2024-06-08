@@ -217,6 +217,12 @@ onMounted(() => {
     word.value = todayWord();
   }
 });
+
+// Disable double tap to zoom on iOS Safari
+// https://stackoverflow.com/a/73334551/
+document.ondblclick = function (e) {
+  e.preventDefault();
+};
 </script>
 
 <template>
