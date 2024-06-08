@@ -352,7 +352,9 @@ document.ondblclick = function (e) {
       </Dialog>
     </div>
 
-    <div class="w-full max-w-80 max-h-96 xs:w-80 xs:h-96 flex flex-col gap-2">
+    <div
+      class="w-full max-w-80 max-h-96 xs:w-80 xs:h-96 flex flex-col gap-2 select-none"
+    >
       <div class="w-full h-full flex gap-2" v-for="row in rows">
         <span
           v-for="letter in letterLimit"
