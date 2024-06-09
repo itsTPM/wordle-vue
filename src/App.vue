@@ -252,7 +252,7 @@ document.ondblclick = function (e) {
   </div>
 
   <div
-    class="p-4 rounded-md border shadow-sm flex flex-col gap-4 max-w-[calc(100vw-1rem)] items-center relative w-full xs:w-[unset]"
+    class="p-2 xs:p-4 rounded-md border shadow-sm flex flex-col gap-4 max-w-[calc(100vw-1rem)] items-center relative w-full xs:w-[unset]"
   >
     <div
       class="w-10 h-10 absolute top-2 right-2 rounded-md overflow-clip hover:bg-primary text-black/75 dark:text-white/75 cursor-pointer transition-colors"
