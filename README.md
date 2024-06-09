@@ -1,3 +1,5 @@
+<img src="./public/logo.png" width="150" float="right" />
+
 # Wordle Vue
 
 [Wordle](https://www.nytimes.com/games/wordle/index.html) game implementation with Vue.js
