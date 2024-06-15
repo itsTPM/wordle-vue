@@ -269,7 +269,14 @@ document.ondblclick = function (e) {
         v-else
       ></IconSun>
     </div>
-    <h1 class="text-center text-3xl font-['Lato']">wordle-vue</h1>
+    <div class="flex justify-center items-center flex-col">
+      <h1 class="text-center text-3xl font-['Lato']">Wordle Vue</h1>
+      <span
+        class="uppercase font-bold text-xs tracking-wide text-secondary"
+        >In Development</span
+      >
+    </div>
+
     <div class="flex flex-col xs:flex-row gap-2 xs:gap-0">
       <span
         class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs transition-colors text-center"
