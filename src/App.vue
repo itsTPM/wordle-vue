@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { Toaster, toast } from "vue-sonner";
+import { IconMoon, IconSun } from "@tabler/icons-vue";
 
 import Keyboard from "@/components/keyboard/Keyboard.vue";
 import {
@@ -12,9 +13,10 @@ import {
 } from "@/components/dialog";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
+import DebugInfo from "./components/DebugInfo.vue";
 import { todayWord, checkWord } from "@/words.js";
-import { IconMoon } from "@tabler/icons-vue";
-import { IconSun } from "@tabler/icons-vue";
+
+const theme = ref("light");
 
 const letterLimit = 5;
 const rows = 6;
@@ -25,13 +27,13 @@ const guessesComparison = ref([]);
 const currentGuess = ref(0);
 const isGameWon = ref(false);
 const isGameLost = ref(false);
-
 const currentMode = ref(""); // 'wordOfTheDay' or 'custom'
+
+guesses.value = Array(rows).fill("");
+guessesComparison.value = Array(rows).fill("");
 
 const customWord = ref("");
 const customLink = ref("");
-
-const theme = ref("light");
 
 const toggleTheme = () => {
   if (theme.value == "light") {
@@ -63,9 +65,6 @@ const resetCustomDialog = () => {
   customWord.value = "";
   customLink.value = "";
 };
-
-guesses.value = Array(rows).fill("");
-guessesComparison.value = Array(rows).fill("");
 
 const addLetter = (letter) => {
   if (inputWord.value.length < letterLimit) {
@@ -239,17 +238,16 @@ document.ondblclick = function (e) {
     <p class="text-3xl text-center font-semibold">Congratulations! You won!</p>
   </div>
 
-  <div
-    class="italic p-2 border rounded-md lg:w-[20rem] lg:m-auto bg-card lg:absolute top-4 left-4 my-4 w-[22rem] max-w-[calc(100vw-2rem)] transition-colors"
-  >
-    <p>word to guess: {{ word }}</p>
-    <p>game mode: {{ currentMode }}</p>
-    <p>input word: {{ inputWord }}</p>
-    <p>current guess: {{ currentGuess }}</p>
-    <p>guesses: {{ guesses }}</p>
-    <p>guesses comparison: {{ guessesComparison }}</p>
-    <p>game state: {{ isGameWon ? "won" : isGameLost ? "lost" : "playing" }}</p>
-  </div>
+  <DebugInfo
+    :word
+    :currentMode
+    :inputWord
+    :currentGuess
+    :guesses
+    :guessesComparison
+    :isGameWon
+    :isGameLost
+  ></DebugInfo>
 
   <div
     class="p-2 xs:p-4 rounded-md border shadow-sm flex flex-col gap-4 max-w-[calc(100vw-1rem)] items-center relative w-full xs:w-[unset]"
@@ -271,10 +269,9 @@ document.ondblclick = function (e) {
     </div>
     <div class="flex justify-center items-center flex-col">
       <h1 class="text-center text-3xl font-['Lato']">Wordle Vue</h1>
-      <span
-        class="uppercase font-bold text-xs tracking-wide text-secondary"
-        >In Development</span
-      >
+      <span class="uppercase font-bold text-xs tracking-wide text-secondary">
+        In Development
+      </span>
     </div>
 
     <div class="flex flex-col xs:flex-row gap-2 xs:gap-0">
