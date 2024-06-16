@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch, watchEffect } from "vue";
 import { Toaster, toast } from "vue-sonner";
 import { IconMoon, IconSun, IconSettings } from "@tabler/icons-vue";
 
@@ -37,6 +37,16 @@ const customWord = ref("");
 const customLink = ref("");
 
 const settings = ref({ showDebugInfo: false });
+
+watch(
+  settings,
+  () => {
+    for (const setting in settings.value) {
+      window.localStorage.setItem(setting, settings.value[setting]);
+    }
+  },
+  { deep: true }
+);
 
 const toggleTheme = () => {
   if (theme.value == "light") {
