@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { Toaster, toast } from "vue-sonner";
-import { IconMoon, IconSun } from "@tabler/icons-vue";
+import { IconMoon, IconSun, IconSettings } from "@tabler/icons-vue";
 
 import Keyboard from "@/components/keyboard/Keyboard.vue";
 import {
@@ -11,6 +11,7 @@ import {
   DialogDescription,
   DialogContent,
 } from "@/components/dialog";
+import Switch from "./components/Switch.vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import DebugInfo from "./components/DebugInfo.vue";
@@ -34,6 +35,8 @@ guessesComparison.value = Array(rows).fill("");
 
 const customWord = ref("");
 const customLink = ref("");
+
+const settings = ref({ showDebugInfo: false });
 
 const toggleTheme = () => {
   if (theme.value == "light") {
@@ -247,26 +250,53 @@ document.ondblclick = function (e) {
     :guessesComparison
     :isGameWon
     :isGameLost
+    v-if="settings.showDebugInfo"
   ></DebugInfo>
 
   <div
-    class="p-2 xs:p-4 rounded-md border shadow-sm flex flex-col gap-4 max-w-[calc(100vw-1rem)] items-center relative w-full xs:w-[unset]"
+    class="p-2 xs:p-4 rounded-md border shadow-sm flex flex-col gap-4 max-w-[calc(100vw-1rem)] items-center relative w-full xs:w-[unset] pt-12"
   >
-    <div
-      class="w-10 h-10 absolute top-2 right-2 rounded-md overflow-clip hover:bg-primary text-black/75 dark:text-white/75 cursor-pointer transition-colors"
-      @click="toggleTheme"
-    >
-      <IconMoon
-        class="w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-        stroke-width="2"
-        v-if="theme === 'light'"
-      ></IconMoon>
-      <IconSun
-        class="w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-        stroke-width="2"
-        v-else
-      ></IconSun>
+    <div class="absolute top-2 right-2 flex gap-2">
+      <Button
+        class="w-10 h-10 overflow-clip hover:bg-primary text-black/75 dark:text-white/75 relative"
+        @click="toggleTheme"
+      >
+        <IconMoon
+          class="w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          stroke-width="2"
+          v-if="theme === 'light'"
+        ></IconMoon>
+        <IconSun
+          class="w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          stroke-width="2"
+          v-else
+        ></IconSun>
+      </Button>
+      <Dialog>
+        <template #trigger>
+          <r-DialogTrigger
+            class="w-10 h-10 overflow-clip hover:bg-primary text-black/75 dark:text-white/75 relative"
+            :as="Button"
+          >
+            <IconSettings
+              class="w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              stroke-width="2"
+            ></IconSettings>
+          </r-DialogTrigger>
+        </template>
+        <template #content>
+          <DialogContent aria-describedby="undefined">
+            <DialogClose></DialogClose>
+            <DialogTitle>Settings</DialogTitle>
+            <div class="flex gap-2 py-6">
+              <Switch id="debug" v-model="settings.showDebugInfo"></Switch>
+              <label for="debug"> Show debug info </label>
+            </div>
+          </DialogContent>
+        </template>
+      </Dialog>
     </div>
+
     <div class="flex justify-center items-center flex-col">
       <h1 class="text-center text-3xl font-['Lato']">Wordle Vue</h1>
       <span class="uppercase font-bold text-xs tracking-wide text-secondary">
