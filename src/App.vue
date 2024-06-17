@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch, watchEffect } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { Toaster, toast } from "vue-sonner";
 import { IconMoon, IconSun, IconSettings } from "@tabler/icons-vue";
 
@@ -11,12 +11,12 @@ import {
   DialogDescription,
   DialogContent,
 } from "@/components/dialog";
-import Switch from "./components/Switch.vue";
+import Switch from "@/components/Switch.vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
-import DebugInfo from "./components/DebugInfo.vue";
-import { todayWord, checkWord } from "@/words.js";
+import DebugInfo from "@/components/DebugInfo.vue";
 import wordleLogo from "../public/logo-text.svg?component";
+import { todayWord, checkWord } from "@/words.js";
 
 const theme = ref("light");
 
