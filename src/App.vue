@@ -16,6 +16,7 @@ import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import DebugInfo from "./components/DebugInfo.vue";
 import { todayWord, checkWord } from "@/words.js";
+import wordleLogo from "../public/logo-text.svg?component";
 
 const theme = ref("light");
 
@@ -277,20 +278,20 @@ document.ondblclick = function (e) {
   ></DebugInfo>
 
   <div
-    class="p-2 xs:p-4 rounded-md border shadow-sm flex flex-col gap-4 max-w-[calc(100vw-1rem)] items-center relative w-full xs:w-[unset] pt-12"
+    class="bg-primary relative w-full border-b p-4 flex flex-col items-center justify-center gap-2"
   >
-    <div class="absolute top-2 right-2 flex gap-2">
+    <div class="absolute bottom-1/2 translate-y-1/2 right-2 flex gap-2">
       <Button
-        class="w-10 h-10 overflow-clip hover:bg-primary text-black/75 dark:text-white/75 relative"
+        class="w-8 sm:w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
         @click="toggleTheme"
       >
         <IconMoon
-          class="w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
           stroke-width="2"
           v-if="theme === 'light'"
         ></IconMoon>
         <IconSun
-          class="w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
           stroke-width="2"
           v-else
         ></IconSun>
@@ -298,11 +299,11 @@ document.ondblclick = function (e) {
       <Dialog>
         <template #trigger>
           <r-DialogTrigger
-            class="w-10 h-10 overflow-clip hover:bg-primary text-black/75 dark:text-white/75 relative"
+            class="w-8 sm:w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
             :as="Button"
           >
             <IconSettings
-              class="w-6 h-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
               stroke-width="2"
             ></IconSettings>
           </r-DialogTrigger>
@@ -320,13 +321,19 @@ document.ondblclick = function (e) {
       </Dialog>
     </div>
 
-    <div class="flex justify-center items-center flex-col">
-      <h1 class="text-center text-3xl font-['Lato']">Wordle Vue</h1>
-      <span class="uppercase font-bold text-xs tracking-wide text-secondary">
-        In Development
-      </span>
+    <div class="flex flex-col justify-center items-center gap-1">
+      <wordleLogo class="fill-foreground h-6"></wordleLogo>
+      <p
+        class="uppercase tracking-wide font-extrabold text-xs text-black/25 dark:text-white/25"
+      >
+        in development
+      </p>
     </div>
+  </div>
 
+  <div
+    class="flex flex-col gap-4 items-center relative w-full xs:w-[unset] my-4"
+  >
     <div class="flex flex-col xs:flex-row gap-2 xs:gap-0">
       <span
         class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs transition-colors text-center"

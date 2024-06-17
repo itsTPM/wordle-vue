@@ -13,9 +13,9 @@
     @apply bg-background text-foreground;
   }
 
-  #app {
+  /* #app {
     @apply flex flex-col items-center justify-center;
-  }
+  } */
 
   /*  Light theme*/
   :root {
