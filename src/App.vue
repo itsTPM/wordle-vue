@@ -340,7 +340,7 @@ document.ondblclick = function (e) {
       <Dialog>
         <template #trigger>
           <r-DialogTrigger
-            class="uppercase px-6 py-2 bg-primary font-bold text-xs border-r border-y text-primary-foreground hover:bg-secondary-hover select-none transition-colors cursor-pointer focus:outline outline-2 outline-offset-2 outline-blue-400 border-l xs:border-l-0"
+            class="uppercase px-6 py-2 bg-primary font-bold text-xs border-r border-y text-primary-foreground hover:bg-secondary-hover select-none transition-colors cursor-pointer focus-visible:outline outline-2 outline-offset-2 outline-blue-400 border-l xs:border-l-0"
           >
             Make wordle with your word!
           </r-DialogTrigger>
