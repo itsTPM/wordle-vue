@@ -38,16 +38,6 @@ const customLink = ref("");
 
 const settings = ref({ showDebugInfo: false });
 
-watch(
-  settings,
-  () => {
-    for (const setting in settings.value) {
-      window.localStorage.setItem(setting, settings.value[setting]);
-    }
-  },
-  { deep: true }
-);
-
 const toggleTheme = () => {
   if (theme.value == "light") {
     theme.value = "dark";
@@ -173,6 +163,29 @@ const makeGuess = () => {
 };
 
 onMounted(() => {
+  // Load settings from localStorage
+  for (const setting in settings.value) {
+    const settingValue = window.localStorage.getItem(setting);
+    if (
+      settingValue !== null &&
+      (settingValue !== undefined) & (settingValue !== "")
+    ) {
+      settings.value[setting] = settingValue == "true" ? true : false;
+    } else {
+      window.localStorage.setItem(setting, settings.value[setting]);
+    }
+  }
+
+  watch(
+    settings,
+    () => {
+      for (const setting in settings.value) {
+        window.localStorage.setItem(setting, settings.value[setting]);
+      }
+    },
+    { deep: true }
+  );
+
   // Theme detection
   const localStorageTheme = window.localStorage.getItem("theme");
   if (
