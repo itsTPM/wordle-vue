@@ -265,18 +265,6 @@ document.ondblclick = function (e) {
     <p class="text-3xl text-center font-semibold">Congratulations! You won!</p>
   </div>
 
-  <DebugInfo
-    :word
-    :currentMode
-    :inputWord
-    :currentGuess
-    :guesses
-    :guessesComparison
-    :isGameWon
-    :isGameLost
-    v-if="settings.showDebugInfo"
-  ></DebugInfo>
-
   <div
     class="bg-primary relative w-full border-b p-4 flex flex-col items-center justify-center gap-2"
   >
@@ -334,6 +322,18 @@ document.ondblclick = function (e) {
   <div
     class="flex flex-col gap-4 items-center relative w-full xs:w-[unset] my-4"
   >
+    <DebugInfo
+      :word
+      :currentMode
+      :inputWord
+      :currentGuess
+      :guesses
+      :guessesComparison
+      :isGameWon
+      :isGameLost
+      v-if="settings.showDebugInfo"
+    ></DebugInfo>
+
     <div class="flex flex-col xs:flex-row gap-2 xs:gap-0">
       <span
         class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs transition-colors text-center"
