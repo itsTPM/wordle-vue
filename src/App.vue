@@ -189,6 +189,7 @@ onMounted(() => {
 
   // Theme detection
   const localStorageTheme = window.localStorage.getItem("theme");
+
   if (
     localStorageTheme !== null &&
     (localStorageTheme !== undefined) & (localStorageTheme !== "")
@@ -203,6 +204,8 @@ onMounted(() => {
       window.matchMedia("(prefers-color-scheme: dark)").matches
     ) {
       window.localStorage.setItem("theme", "dark");
+      theme.value = "dark";
+      document.body.classList.add("dark");
     } else {
       window.localStorage.setItem("theme", "light");
     }
