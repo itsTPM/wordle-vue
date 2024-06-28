@@ -269,7 +269,7 @@ document.ondblclick = function (e) {
   </div>
 
   <div
-    class="bg-primary relative w-full border-b p-4 flex flex-col items-center justify-center gap-2"
+    class="bg-primary relative w-full border-b px-4 flex flex-col items-center justify-center gap-2 py-2 xs:py-4"
   >
     <div class="absolute bottom-1/2 translate-y-1/2 right-2 flex gap-2">
       <Button
@@ -323,7 +323,7 @@ document.ondblclick = function (e) {
   </div>
 
   <div
-    class="flex flex-col gap-4 items-center relative w-full xs:w-[unset] my-4"
+    class="flex flex-col gap-4 items-center relative w-full xs:w-[unset] my-2 xs:my-4"
   >
     <DebugInfo
       :word
@@ -337,7 +337,7 @@ document.ondblclick = function (e) {
       v-if="settings.showDebugInfo"
     ></DebugInfo>
 
-    <div class="flex flex-col xs:flex-row gap-2 xs:gap-0">
+    <div class="flex">
       <span
         class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs transition-colors text-center"
       >
@@ -350,10 +350,16 @@ document.ondblclick = function (e) {
       <Dialog>
         <template #trigger>
           <r-DialogTrigger
-            class="uppercase px-6 py-2 bg-primary font-bold text-xs border-r border-y text-primary-foreground hover:bg-secondary-hover select-none border-l xs:border-l-0 rounded-none"
+            class="uppercase px-6 py-2 bg-primary font-bold text-xs border-r border-y text-primary-foreground hover:bg-secondary-hover select-none border-l-0 rounded-none hidden xs:block"
             :as="Button"
           >
             Make wordle with your word!
+          </r-DialogTrigger>
+          <r-DialogTrigger
+            class="uppercase aspect-square h-8 bg-primary font-bold text-xs border-r border-y text-primary-foreground hover:bg-secondary-hover select-none border-l-0 rounded-none block xs:hidden"
+            :as="Button"
+          >
+            +
           </r-DialogTrigger>
         </template>
         <template #content>
@@ -421,7 +427,7 @@ document.ondblclick = function (e) {
     </div>
 
     <div
-      class="w-full max-w-80 max-h-96 xs:w-80 xs:h-96 flex flex-col gap-2 select-none"
+      class="w-72 max-w-80 max-h-96 xs:w-80 xs:h-96 flex flex-col gap-2 select-none"
     >
       <div class="w-full h-full flex gap-2" v-for="row in rows">
         <span

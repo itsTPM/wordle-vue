@@ -20,7 +20,7 @@ This is my personal learning project, not claiming to be fully compliant with th
 - [x] Word validation with pre-defined list
 - [x] Highlighting of letters according to their presence and position in the word
 - [x] On-screen keyboard
-- [ ] Mobile responsive
+- [x] Mobile responsive
 - [ ] Game settings
 - [ ] Local statistics
 - [x] Light/Dark themes
