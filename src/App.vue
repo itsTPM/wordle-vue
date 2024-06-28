@@ -15,7 +15,7 @@ import Switch from "@/components/Switch.vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import DebugInfo from "@/components/DebugInfo.vue";
-import wordleLogo from "../public/logo-text.svg?component";
+import WordleVueLogo from "../public/logo-text.svg?component";
 import { todayWord, checkWord } from "@/words.js";
 
 const theme = ref("light");
@@ -274,16 +274,21 @@ document.ondblclick = function (e) {
     <div class="absolute bottom-1/2 translate-y-1/2 right-2 flex gap-2">
       <Button
         class="w-8 sm:w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
+        :aria-label="
+          theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'
+        "
         @click="toggleTheme"
       >
         <IconMoon
           class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
           stroke-width="2"
+          aria-hidden="true"
           v-if="theme === 'light'"
         ></IconMoon>
         <IconSun
           class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
           stroke-width="2"
+          aria-hidden="true"
           v-else
         ></IconSun>
       </Button>
@@ -291,10 +296,13 @@ document.ondblclick = function (e) {
         <template #trigger>
           <r-DialogTrigger
             class="w-8 sm:w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
+            type="button"
             :as="Button"
+            aria-label="Open settings dialog"
           >
             <IconSettings
               class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              aria-hidden="true"
               stroke-width="2"
             ></IconSettings>
           </r-DialogTrigger>
@@ -313,7 +321,11 @@ document.ondblclick = function (e) {
     </div>
 
     <div class="flex flex-col justify-center items-center gap-1">
-      <wordleLogo class="fill-foreground h-6"></wordleLogo>
+      <WordleVueLogo
+        class="fill-foreground h-6"
+        aria-label="Wordle Vue"
+      ></WordleVueLogo>
+
       <p
         class="uppercase tracking-wide font-extrabold text-xs text-black/25 dark:text-white/25"
       >
@@ -351,12 +363,14 @@ document.ondblclick = function (e) {
         <template #trigger>
           <r-DialogTrigger
             class="uppercase px-6 py-2 bg-primary font-bold text-xs border-r border-y text-primary-foreground hover:bg-secondary-hover select-none border-l-0 rounded-none hidden xs:block"
+            type="button"
             :as="Button"
           >
             Make wordle with your word!
           </r-DialogTrigger>
           <r-DialogTrigger
             class="uppercase aspect-square h-8 bg-primary font-bold text-xs border-r border-y text-primary-foreground hover:bg-secondary-hover select-none border-l-0 rounded-none block xs:hidden"
+            type="button"
             :as="Button"
           >
             +

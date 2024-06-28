@@ -23,10 +23,12 @@ const keyboard = [
         v-if="keyboard.indexOf(row) === keyboard.length - 1"
         class="bg-secondary hover:bg-secondary-hover xs:!aspect-[1.5/1] text-secondary-foreground"
         @click="$emit('removeLastLetter')"
+        aria-label="Remove last letter"
       >
         <IconBackspace
           class="w-8 rotate-180"
           stroke-width="1.5"
+          aria-hidden="true"
         ></IconBackspace>
       </KeyboardButton>
       <KeyboardButton
@@ -40,8 +42,13 @@ const keyboard = [
         v-if="keyboard.indexOf(row) === keyboard.length - 1"
         class="bg-secondary hover:bg-secondary-hover xs:!aspect-[1.5/1] text-secondary-foreground"
         @click="$emit('makeGuess')"
+        aria-label="Make a guess"
       >
-        <IconCornerDownLeft class="w-8" stroke-width="1.5"></IconCornerDownLeft>
+        <IconCornerDownLeft
+          class="w-8"
+          stroke-width="1.5"
+          aria-hidden="true"
+        ></IconCornerDownLeft>
       </KeyboardButton>
     </div>
   </div>
