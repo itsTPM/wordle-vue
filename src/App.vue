@@ -255,7 +255,7 @@ document.ondblclick = function (e) {
 </script>
 
 <template>
-  <Toaster position="top-center" :expand="true" :duration="1500" />
+  <Toaster position="top-center" :expand="true" :duration="1500" :theme />
 
   <div
     class="absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-[rgba(0,0,0,0.25)] z-10 backdrop-blur-md transition-all duration-300 flex items-center justify-center"
