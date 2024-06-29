@@ -385,7 +385,7 @@ document.ondblclick = function (e) {
                 Enter any word and get a special link to share with your friend
               </DialogDescription>
               <form
-                class="grid w-full gap-2 grid-rows-1 grid-cols-4"
+                class="flex flex-col xs:grid w-full gap-2 grid-rows-1 grid-cols-4"
                 @submit.prevent="makeCustomLink"
               >
                 <Input
@@ -411,7 +411,9 @@ document.ondblclick = function (e) {
             </template>
             <template v-else>
               <DialogDescription> Custom link for your word </DialogDescription>
-              <div class="grid grid-rows-1 grid-cols-4 gap-2 w-full">
+              <div
+                class="flex flex-col xs:grid grid-rows-1 grid-cols-4 gap-2 w-full"
+              >
                 <Input
                   type="text"
                   disabled
