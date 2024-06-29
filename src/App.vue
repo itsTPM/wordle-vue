@@ -268,75 +268,78 @@ document.ondblclick = function (e) {
     <p class="text-3xl text-center font-semibold">Congratulations! You won!</p>
   </div>
 
-  <div
+  <header
     class="bg-primary relative w-full border-b px-4 flex flex-col items-center justify-center gap-2 py-2 xs:py-4"
   >
-    <div class="absolute bottom-1/2 translate-y-1/2 right-2 flex gap-2">
-      <Button
-        class="w-8 sm:w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
-        :aria-label="
-          theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'
-        "
-        @click="toggleTheme"
-      >
-        <IconMoon
-          class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-          stroke-width="2"
-          aria-hidden="true"
-          v-if="theme === 'light'"
-        ></IconMoon>
-        <IconSun
-          class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-          stroke-width="2"
-          aria-hidden="true"
-          v-else
-        ></IconSun>
-      </Button>
-      <Dialog>
-        <template #trigger>
-          <r-DialogTrigger
-            class="w-8 sm:w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
-            type="button"
-            :as="Button"
-            aria-label="Open settings dialog"
-          >
-            <IconSettings
-              class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-              aria-hidden="true"
-              stroke-width="2"
-            ></IconSettings>
-          </r-DialogTrigger>
-        </template>
-        <template #content>
-          <DialogContent aria-describedby="undefined">
-            <DialogClose></DialogClose>
-            <DialogTitle>Settings</DialogTitle>
-            <div class="flex gap-2 py-6">
-              <Switch id="debug" v-model="settings.showDebugInfo"></Switch>
-              <label for="debug"> Show debug info </label>
-            </div>
-          </DialogContent>
-        </template>
-      </Dialog>
-    </div>
+    <ul class="absolute bottom-1/2 translate-y-1/2 right-2 flex gap-2">
+      <li class="h-8 sm:h-12">
+        <Button
+          class="w-8 sm:w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
+          :aria-label="
+            theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'
+          "
+          @click="toggleTheme"
+        >
+          <IconMoon
+            class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            stroke-width="2"
+            aria-hidden="true"
+            v-if="theme === 'light'"
+          ></IconMoon>
+          <IconSun
+            class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            stroke-width="2"
+            aria-hidden="true"
+            v-else
+          ></IconSun>
+        </Button>
+      </li>
 
-    <div class="flex flex-col justify-center items-center gap-1">
-      <WordleVueLogo
-        class="fill-foreground h-6"
-        aria-label="Wordle Vue"
-      ></WordleVueLogo>
+      <li class="h-8 sm:h-12">
+        <Dialog>
+          <template #trigger>
+            <r-DialogTrigger
+              class="w-8 sm:w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
+              type="button"
+              :as="Button"
+              aria-label="Open settings dialog"
+            >
+              <IconSettings
+                class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                aria-hidden="true"
+                stroke-width="2"
+              ></IconSettings>
+            </r-DialogTrigger>
+          </template>
+          <template #content>
+            <DialogContent aria-describedby="undefined">
+              <DialogClose></DialogClose>
+              <DialogTitle>Settings</DialogTitle>
+              <div class="flex gap-2 py-6">
+                <Switch id="debug" v-model="settings.showDebugInfo"></Switch>
+                <label for="debug"> Show debug info </label>
+              </div>
+            </DialogContent>
+          </template>
+        </Dialog>
+      </li>
+    </ul>
 
-      <p
-        class="uppercase tracking-wide font-extrabold text-xs text-black/25 dark:text-white/25"
-      >
-        in development
-      </p>
-    </div>
-  </div>
+    <WordleVueLogo
+      class="fill-foreground h-6"
+      aria-hidden="true"
+    ></WordleVueLogo>
 
-  <div
-    class="flex flex-col gap-4 items-center relative w-full xs:w-[unset] my-2 xs:my-4"
-  >
+    <h1 class="sr-only">Wordle Vue game</h1>
+
+    <p
+      class="uppercase tracking-wide font-extrabold text-xs text-black/25 dark:text-white/25 -mt-1"
+    >
+      in development
+    </p>
+  </header>
+
+  <main class="flex flex-col gap-4 items-center w-full my-2 xs:my-4">
     <DebugInfo
       :word
       :currentMode
@@ -350,14 +353,14 @@ document.ondblclick = function (e) {
     ></DebugInfo>
 
     <div class="flex">
-      <span
+      <p
         class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs transition-colors text-center"
       >
         <template v-if="currentMode === 'wordOfTheDay'">
           Word of the day
         </template>
         <template v-else-if="currentMode === 'custom'"> Custom word</template>
-      </span>
+      </p>
 
       <Dialog>
         <template #trigger>
@@ -473,5 +476,5 @@ document.ondblclick = function (e) {
       @makeGuess="makeGuess"
       @removeLastLetter="removeLastLetter"
     ></Keyboard>
-  </div>
+  </main>
 </template>
