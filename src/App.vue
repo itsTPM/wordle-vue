@@ -269,25 +269,25 @@ document.ondblclick = function (e) {
   </div>
 
   <header
-    class="bg-primary relative w-full border-b px-4 flex flex-col items-center justify-center gap-2 py-2 xs:py-4"
+    class="bg-primary relative w-full border-b px-4 flex flex-col items-baseline xs:items-center justify-center gap-2 py-2 xs:py-4"
   >
-    <ul class="absolute bottom-1/2 translate-y-1/2 right-2 flex gap-2">
-      <li class="h-8 sm:h-12">
+    <ul class="absolute bottom-1/2 translate-y-1/2 right-2 flex xs:gap-2">
+      <li class="h-12">
         <Button
-          class="w-8 sm:w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
+          class="w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
           :aria-label="
             theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'
           "
           @click="toggleTheme"
         >
           <IconMoon
-            class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            class="w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
             stroke-width="2"
             aria-hidden="true"
             v-if="theme === 'light'"
           ></IconMoon>
           <IconSun
-            class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            class="w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
             stroke-width="2"
             aria-hidden="true"
             v-else
@@ -295,17 +295,17 @@ document.ondblclick = function (e) {
         </Button>
       </li>
 
-      <li class="h-8 sm:h-12">
+      <li class="h-12">
         <Dialog>
           <template #trigger>
             <r-DialogTrigger
-              class="w-8 sm:w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
+              class="w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
               type="button"
               :as="Button"
               aria-label="Open guide dialog"
             >
               <IconHelp
-                class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                class="w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                 aria-hidden="true"
                 stroke-width="2"
               ></IconHelp>
@@ -347,17 +347,17 @@ document.ondblclick = function (e) {
           </template>
         </Dialog>
       </li>
-      <li class="h-8 sm:h-12">
+      <li class="h-12">
         <Dialog>
           <template #trigger>
             <r-DialogTrigger
-              class="w-8 sm:w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
+              class="w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
               type="button"
               :as="Button"
               aria-label="Open settings dialog"
             >
               <IconSettings
-                class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                class="w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                 aria-hidden="true"
                 stroke-width="2"
               ></IconSettings>
