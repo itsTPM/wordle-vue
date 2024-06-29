@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import { Toaster, toast } from "vue-sonner";
-import { IconMoon, IconSun, IconSettings } from "@tabler/icons-vue";
+import { IconMoon, IconSun, IconSettings, IconHelp } from "@tabler/icons-vue";
 
 import Keyboard from "@/components/keyboard/Keyboard.vue";
 import {
@@ -295,6 +295,58 @@ document.ondblclick = function (e) {
         </Button>
       </li>
 
+      <li class="h-8 sm:h-12">
+        <Dialog>
+          <template #trigger>
+            <r-DialogTrigger
+              class="w-8 sm:w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
+              type="button"
+              :as="Button"
+              aria-label="Open guide dialog"
+            >
+              <IconHelp
+                class="w-6 sm:w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                aria-hidden="true"
+                stroke-width="2"
+              ></IconHelp>
+            </r-DialogTrigger>
+          </template>
+          <template #content>
+            <DialogContent>
+              <DialogClose></DialogClose>
+              <DialogTitle>Help</DialogTitle>
+              <DialogDescription
+                class="text-center text-sm pt-0 text-black/75 dark:text-white/75"
+              >
+                How to play
+              </DialogDescription>
+              <div class="flex flex-col gap-1">
+                <p>In Wordle game you need to guess word with only 6 tries.</p>
+                <p class="border-l-4 pl-4 text-black/75 dark:text-white/75">
+                  Each guess should be a valid 5-letter word from English
+                  dictionary.
+                </p>
+                <hr class="my-4" />
+                <p class="font-medium">Highlighting</p>
+                <ul>
+                  <li>
+                    <span class="text-emerald-500">Green</span> means that the
+                    letter is in the word, and located in correct place.
+                  </li>
+                  <li>
+                    <span class="text-yellow-500">Yellow</span> means that the
+                    letter is in the word, but is located in a different place.
+                  </li>
+                  <li>
+                    <span class="text-gray-500">Gray</span> means that the
+                    letter is not presented in the word.
+                  </li>
+                </ul>
+              </div>
+            </DialogContent>
+          </template>
+        </Dialog>
+      </li>
       <li class="h-8 sm:h-12">
         <Dialog>
           <template #trigger>
