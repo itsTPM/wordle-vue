@@ -399,6 +399,7 @@ document.ondblclick = function (e) {
                   class="col-span-3"
                 />
                 <Button
+                  type="submit"
                   class="p-2 bg-[#5f9f55] text-white border-[#45873b] hover:bg-[#86ae80] hover:border-[#799672] border"
                 >
                   Get link
