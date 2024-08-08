@@ -29,7 +29,7 @@ This is my personal learning project, not claiming to be fully compliant with th
   - [ ] Русский
   - [ ] Українська
 - [x] PWA
-- [ ] Guide (how to play)
+- [x] Guide (how to play)
 
 ### Build or run local server
 
