@@ -133,6 +133,8 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
+const guideDialogOpen = ref(false);
+
 const makeGuess = () => {
   if (inputWord.value.length !== letterLimit) {
     toast("Not enough letters!");
@@ -223,6 +225,14 @@ onMounted(() => {
     },
     { deep: true }
   );
+
+  const seenGuide = window.localStorage.getItem("seenGuide");
+
+  if (!seenGuide) {
+    window.localStorage.setItem("seenGuide", "true");
+
+    guideDialogOpen.value = true;
+  }
 
   // Theme detection
   const localStorageTheme = window.localStorage.getItem("theme");
@@ -330,7 +340,7 @@ document.ondblclick = function (e) {
       </li>
 
       <li class="h-12">
-        <Dialog>
+        <Dialog v-model:open="guideDialogOpen">
           <template #trigger>
             <r-DialogTrigger
               class="w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
