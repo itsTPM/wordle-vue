@@ -418,16 +418,16 @@ document.ondblclick = function (e) {
                 <p class="font-medium">Highlighting</p>
                 <ul>
                   <li>
-                    <span class="text-emerald-500">Green</span> means that the
-                    letter is in the word, and located in correct place.
+                    <span class="text-green">Green</span> means that the letter
+                    is in the word, and located in correct place.
                   </li>
                   <li>
-                    <span class="text-yellow-500">Yellow</span> means that the
+                    <span class="text-yellow">Yellow</span> means that the
                     letter is in the word, but is located in a different place.
                   </li>
                   <li>
-                    <span class="text-gray-500">Gray</span> means that the
-                    letter is not presented in the word.
+                    <span class="text-gray">Gray</span> means that the letter is
+                    not presented in the word.
                   </li>
                 </ul>
                 <hr class="my-4" />
@@ -706,13 +706,13 @@ document.ondblclick = function (e) {
           class="bg-gray-50 dark:bg-white/5 border-2 h-full aspect-square flex items-center justify-center text-center text-3xl uppercase font-bold transition-all duration-300 w-full"
           :class="[
             guessesComparison[row - 1]?.charAt(letter - 1) === 'N'
-              ? ['!bg-gray-500', 'text-white', 'border-gray-500']
+              ? ['!bg-gray', 'text-white', 'border-gray']
               : '',
             guessesComparison[row - 1]?.charAt(letter - 1) === 'Y'
-              ? ['!bg-emerald-500', 'text-white', 'border-emerald-500']
+              ? ['!bg-green', 'text-white', 'border-green']
               : '',
             guessesComparison[row - 1]?.charAt(letter - 1) === 'X'
-              ? ['!bg-yellow-500', 'text-white', 'border-yellow-500']
+              ? ['!bg-yellow', 'text-white', 'border-yellow']
               : '',
             guesses[row - 1]?.charAt(letter - 1) ? ['animate-typing'] : '',
           ]"

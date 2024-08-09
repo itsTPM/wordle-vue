@@ -23,6 +23,10 @@ export default {
         secondary: "var(--secondary)",
         "secondary-foreground": "var(--secondary-foreground)",
         "secondary-hover": "var(--secondary-hover)",
+
+        green: "var(--green)",
+        yellow: "var(--yellow)",
+        gray: "var(--gray)",
       },
       borderColor: (theme) => ({
         DEFAULT: theme("colors.border"),

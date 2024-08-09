@@ -29,6 +29,11 @@
     --secondary: #e5e7eb;
     --secondary-foreground: #333;
     --secondary-hover: #d1d5db;
+
+    /* these colors are theme independent */
+    --green: #10b981;
+    --yellow: #eab308;
+    --gray: #6b7280;
   }
 
   /*  Dark theme*/
