@@ -166,7 +166,7 @@ const makeGuess = () => {
     ) {
       result[i] = "X";
       targetLetterCount[guess[i]]--;
-      setLetterComparison(target[i], "X");
+      setLetterComparison(guess[i], "X");
     }
   }
 

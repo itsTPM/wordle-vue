@@ -35,9 +35,9 @@ const keyboard = [
       <KeyboardButton
         @click="$emit('addLetter', key)"
         :class="{
-          'bg-emerald-500': lettersComparison[key] == 'Y',
-          'bg-yellow-500': lettersComparison[key] == 'X',
-          'bg-gray-500': lettersComparison[key] == 'N',
+          '!bg-emerald-500': lettersComparison[key] == 'Y',
+          '!bg-yellow-500': lettersComparison[key] == 'X',
+          '!bg-gray-500': lettersComparison[key] == 'N',
         }"
         v-for="key in row"
         :key="key"
