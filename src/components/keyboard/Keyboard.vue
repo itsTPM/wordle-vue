@@ -4,6 +4,7 @@ import { IconBackspace, IconCornerDownLeft } from "@tabler/icons-vue";
 import KeyboardButton from "@/components/keyboard/KeyboardButton.vue";
 
 const emits = defineEmits(["addLetter", "makeGuess", "removeLastLetter"]);
+const props = defineProps(["lettersComparison"]);
 
 const keyboard = [
   ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
@@ -33,6 +34,11 @@ const keyboard = [
       </KeyboardButton>
       <KeyboardButton
         @click="$emit('addLetter', key)"
+        :class="{
+          'bg-emerald-500': lettersComparison[key] == 'Y',
+          'bg-yellow-500': lettersComparison[key] == 'X',
+          'bg-gray-500': lettersComparison[key] == 'N',
+        }"
         v-for="key in row"
         :key="key"
       >

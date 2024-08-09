@@ -30,9 +30,15 @@ const currentGuess = ref(0);
 const isGameWon = ref(false);
 const isGameLost = ref(false);
 const currentMode = ref(""); // 'wordOfTheDay', 'random' or 'custom'
+const letters = [..."abcdefghijklmnopqrstuvwxyz"];
+const lettersComparison = ref({});
 
 guesses.value = Array(rows).fill("");
 guessesComparison.value = Array(rows).fill("");
+
+for (const letter of letters) {
+  lettersComparison.value[letter] = "";
+}
 
 const customWord = ref("");
 const customLink = ref("");
@@ -92,6 +98,12 @@ const removeLastLetter = () => {
   guesses.value[currentGuess.value] = inputWord.value;
 };
 
+const setLetterComparison = (letter, match) => {
+  if (match === "X" && lettersComparison.value[letter] === "Y") return;
+
+  lettersComparison.value[letter] = match;
+};
+
 window.addEventListener("keydown", (e) => {
   if (isGameWon.value || isGameLost.value) return;
   if (settings.value.onlyOnscreenInput) return;
@@ -141,6 +153,7 @@ const makeGuess = () => {
     if (guess[i] === target[i]) {
       result[i] = "Y";
       targetLetterCount[guess[i]]--;
+      setLetterComparison(target[i], "Y");
     }
   }
 
@@ -153,6 +166,15 @@ const makeGuess = () => {
     ) {
       result[i] = "X";
       targetLetterCount[guess[i]]--;
+      setLetterComparison(target[i], "X");
+    }
+  }
+
+  for (let i = 0; i < result.length; i++) {
+    const letter = result[i];
+
+    if (letter == "N") {
+      setLetterComparison(guess[i], "N");
     }
   }
 
@@ -598,6 +620,7 @@ document.ondblclick = function (e) {
     </div>
 
     <Keyboard
+      :lettersComparison
       @addLetter="(letter) => addLetter(letter)"
       @makeGuess="makeGuess"
       @removeLastLetter="removeLastLetter"
