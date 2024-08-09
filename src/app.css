@@ -6,7 +6,7 @@
   html,
   body,
   #app {
-    @apply min-h-screen;
+    @apply min-h-[100dvh];
   }
 
   body {
