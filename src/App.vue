@@ -352,6 +352,28 @@ document.ondblclick = function (e) {
                     letter is not presented in the word.
                   </li>
                 </ul>
+                <hr class="my-4" />
+                <p class="font-medium">Change game mode</p>
+                <p>
+                  You can select between 'Word of the day' and 'Random word'
+                  modes.
+                </p>
+                <div
+                  class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs text-center max-w-48 select-none"
+                >
+                  <template v-if="currentMode === 'wordOfTheDay'">
+                    Word of the day
+                  </template>
+                  <template v-if="currentMode === 'random'">
+                    Random word
+                  </template>
+                  <template v-else-if="currentMode === 'custom'">
+                    Custom word
+                  </template>
+                </div>
+                <p class="text-xs text-black/50 dark:text-white/50">
+                  Find this button on the page to change game mode.
+                </p>
               </div>
             </DialogContent>
           </template>
