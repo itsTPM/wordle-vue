@@ -40,7 +40,7 @@ const customLink = ref("");
 const settings = ref({ showDebugInfo: false });
 
 const toggleTheme = () => {
-  if (theme.value == "light") {
+  if (theme.value === "light") {
     theme.value = "dark";
     document.body.classList.add("dark");
     localStorage.setItem("theme", "dark");
@@ -179,9 +179,10 @@ onMounted(() => {
     const settingValue = window.localStorage.getItem(setting);
     if (
       settingValue !== null &&
-      (settingValue !== undefined) & (settingValue !== "")
+      settingValue !== undefined &&
+      settingValue !== ""
     ) {
-      settings.value[setting] = settingValue == "true" ? true : false;
+      settings.value[setting] = settingValue === "true";
     } else {
       window.localStorage.setItem(setting, settings.value[setting]);
     }
@@ -202,9 +203,10 @@ onMounted(() => {
 
   if (
     localStorageTheme !== null &&
-    (localStorageTheme !== undefined) & (localStorageTheme !== "")
+    localStorageTheme !== undefined &&
+    localStorageTheme !== ""
   ) {
-    if (localStorageTheme == "dark") {
+    if (localStorageTheme === "dark") {
       theme.value = "dark";
       document.body.classList.add("dark");
     }
