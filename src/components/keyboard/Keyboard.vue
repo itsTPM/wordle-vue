@@ -4,7 +4,7 @@ import { IconBackspace, IconCornerDownLeft } from "@tabler/icons-vue";
 import KeyboardButton from "@/components/keyboard/KeyboardButton.vue";
 
 const emits = defineEmits(["addLetter", "makeGuess", "removeLastLetter"]);
-const props = defineProps(["lettersComparison"]);
+const props = defineProps(["lettersComparison", "swapKeyboardButtons"]);
 
 const keyboard = [
   ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
@@ -23,11 +23,17 @@ const keyboard = [
       <KeyboardButton
         v-if="keyboard.indexOf(row) === keyboard.length - 1"
         class="bg-secondary hover:bg-secondary-hover xs:!aspect-[1.5/1] text-secondary-foreground"
+        :class="{
+          'order-2': swapKeyboardButtons,
+        }"
         @click="$emit('removeLastLetter')"
         aria-label="Remove last letter"
       >
         <IconBackspace
           class="w-8 rotate-180"
+          :class="{
+            'rotate-0': swapKeyboardButtons,
+          }"
           stroke-width="1.5"
           aria-hidden="true"
         ></IconBackspace>
@@ -47,11 +53,17 @@ const keyboard = [
       <KeyboardButton
         v-if="keyboard.indexOf(row) === keyboard.length - 1"
         class="bg-secondary hover:bg-secondary-hover xs:!aspect-[1.5/1] text-secondary-foreground"
+        :class="{
+          '-order-1': swapKeyboardButtons,
+        }"
         @click="$emit('makeGuess')"
         aria-label="Make a guess"
       >
         <IconCornerDownLeft
           class="w-8"
+          :class="{
+            'rotate-180': swapKeyboardButtons,
+          }"
           stroke-width="1.5"
           aria-hidden="true"
         ></IconCornerDownLeft>

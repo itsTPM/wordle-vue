@@ -20,7 +20,11 @@ import { todayWord, randomWord, checkWord } from "@/words.js";
 
 // App state
 const theme = ref("light");
-const settings = ref({ showDebugInfo: false, onlyOnscreenInput: false });
+const settings = ref({
+  showDebugInfo: false,
+  onlyOnscreenInput: false,
+  swapKeyboardButtons: false,
+});
 
 // Game state
 const letterLimit = 5;
@@ -447,6 +451,15 @@ document.ondblclick = function (e) {
                     Onscreen keyboard input only
                   </label>
                 </div>
+                <div class="flex gap-2">
+                  <Switch
+                    id="swapKeyboardButtons"
+                    v-model="settings.swapKeyboardButtons"
+                  ></Switch>
+                  <label for="swapKeyboardButtons">
+                    Swap 'Enter' and 'Backspace' buttons
+                  </label>
+                </div>
               </div>
             </DialogContent>
           </template>
@@ -634,6 +647,7 @@ document.ondblclick = function (e) {
 
     <Keyboard
       :lettersComparison
+      :swapKeyboardButtons="settings.swapKeyboardButtons"
       @addLetter="(letter) => addLetter(letter)"
       @makeGuess="makeGuess"
       @removeLastLetter="removeLastLetter"
