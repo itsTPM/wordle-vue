@@ -391,7 +391,7 @@ document.ondblclick = function (e) {
     </p>
   </header>
 
-  <main class="flex flex-col gap-4 items-center w-full my-2 xs:my-4">
+  <main class="flex flex-col gap-4 items-center w-full py-2 xs:py-4 relative">
     <DebugInfo
       :word
       :currentMode
