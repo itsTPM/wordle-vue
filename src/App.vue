@@ -27,9 +27,18 @@ import { todayWord, randomWord, checkWord } from "@/words.js";
 // App state
 const theme = ref("light");
 const settings = ref({
-  showDebugInfo: false,
-  onlyOnscreenInput: false,
-  swapKeyboardButtons: false,
+  showDebugInfo: {
+    title: "Show debug info",
+    value: false,
+  },
+  onlyOnscreenInput: {
+    title: "Onscreen keyboard input only",
+    value: false,
+  },
+  swapKeyboardButtons: {
+    title: "Swap 'Enter' and 'Backspace' buttons",
+    value: false,
+  },
 });
 const statistics = ref({
   wordOfTheDay: {
@@ -145,7 +154,11 @@ const setLetterComparison = (letter, match) => {
 };
 
 window.addEventListener("keydown", (e) => {
-  if (isGameWon.value || isGameLost.value || settings.value.onlyOnscreenInput)
+  if (
+    isGameWon.value ||
+    isGameLost.value ||
+    settings.value.onlyOnscreenInput.value
+  )
     return;
 
   const key = e.key;
@@ -241,12 +254,12 @@ const makeGuess = () => {
 onMounted(() => {
   // Load settings from localStorage
   for (const setting in settings.value) {
-    const settingValue = window.localStorage.getItem(setting);
+    const settingValue = window.localStorage.getItem(setting.title);
 
     if (settingValue) {
       settings.value[setting] = settingValue === "true";
     } else {
-      window.localStorage.setItem(setting, settings.value[setting]);
+      window.localStorage.setItem(setting, settings.value[setting].value);
     }
   }
 
@@ -292,7 +305,7 @@ onMounted(() => {
     settings,
     () => {
       for (const setting in settings.value) {
-        window.localStorage.setItem(setting, settings.value[setting]);
+        window.localStorage.setItem(setting, settings.value[setting].value);
       }
     },
     { deep: true }
@@ -477,30 +490,12 @@ document.ondblclick = function (e) {
             <DialogContent aria-describedby="undefined">
               <DialogClose></DialogClose>
               <DialogTitle>Settings</DialogTitle>
-              <div class="flex flex-col gap-6 py-6">
-                <div class="flex gap-2">
-                  <Switch id="debug" v-model="settings.showDebugInfo"></Switch>
-                  <label for="debug"> Show debug info </label>
-                </div>
-                <div class="flex gap-2">
-                  <Switch
-                    id="onlyOnscreenInput"
-                    v-model="settings.onlyOnscreenInput"
-                  ></Switch>
-                  <label for="onlyOnscreenInput">
-                    Onscreen keyboard input only
-                  </label>
-                </div>
-                <div class="flex gap-2">
-                  <Switch
-                    id="swapKeyboardButtons"
-                    v-model="settings.swapKeyboardButtons"
-                  ></Switch>
-                  <label for="swapKeyboardButtons">
-                    Swap 'Enter' and 'Backspace' buttons
-                  </label>
-                </div>
-              </div>
+              <ul class="flex flex-col gap-6 py-6">
+                <li class="flex gap-2" v-for="(setting, keyName) in settings">
+                  <Switch :id="keyName" v-model="setting.value"></Switch>
+                  <label :for="keyName"> {{ setting.title }} </label>
+                </li>
+              </ul>
             </DialogContent>
           </template>
         </Dialog>
@@ -512,7 +507,7 @@ document.ondblclick = function (e) {
               class="w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
               type="button"
               :as="Button"
-              aria-label="Open settings dialog"
+              aria-label="Open statistics dialog"
             >
               <IconChartBar
                 class="w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
@@ -570,7 +565,7 @@ document.ondblclick = function (e) {
       :guessesComparison
       :isGameWon
       :isGameLost
-      v-if="settings.showDebugInfo"
+      v-if="settings.showDebugInfo.value"
     ></DebugInfo>
 
     <div class="flex">
@@ -724,7 +719,7 @@ document.ondblclick = function (e) {
 
     <Keyboard
       :lettersComparison
-      :swapKeyboardButtons="settings.swapKeyboardButtons"
+      :swapKeyboardButtons="settings.swapKeyboardButtons.value"
       @addLetter="(letter) => addLetter(letter)"
       @makeGuess="makeGuess"
       @removeLastLetter="removeLastLetter"
