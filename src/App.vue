@@ -60,6 +60,15 @@ const toggleTheme = () => {
 const changeMode = (newMode) => {
   currentMode.value = newMode;
 
+  currentGuess.value = 0;
+  inputWord.value = "";
+  guesses.value = Array(rows).fill("");
+  guessesComparison.value = Array(rows).fill("");
+
+  for (const letter of letters) {
+    lettersComparison.value[letter] = "";
+  }
+
   if (newMode === "random") {
     word.value = randomWord();
   } else {
