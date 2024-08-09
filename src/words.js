@@ -1,14 +1,17 @@
 import allWords from "@/allWords.json";
 
 export const todayWord = () => {
-  const date = new Date();
+  const currentDate = new Date();
+  const dayStart = new Date(2024, 7, 1);
+  const diff = +currentDate - +dayStart; // calculate diff in ms
 
-  // such a weird algorithm
-  const todayIndex = +`${String(date.getFullYear()).slice(2, 4)}${String(
-    date.getDay()
-  ).slice(0, 1)}${String(date.getMonth()).slice(0, 1)}`;
+  const dayIndex = Math.floor(diff / (1000 * 60 * 60 * 24)); // convert ms to days
 
-  return allWords[todayIndex];
+  if (dayIndex > allWords.length) {
+    return allWords[dayIndex - allWords.length];
+  } else {
+    return allWords[dayIndex];
+  }
 };
 
 // check if the word is in the list
