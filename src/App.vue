@@ -18,8 +18,11 @@ import DebugInfo from "@/components/DebugInfo.vue";
 import WordleVueLogo from "../public/logo-text.svg?component";
 import { todayWord, randomWord, checkWord } from "@/words.js";
 
+// App state
 const theme = ref("light");
+const settings = ref({ showDebugInfo: false, onlyOnscreenInput: false });
 
+// Game state
 const letterLimit = 5;
 const rows = 6;
 const word = ref("");
@@ -32,6 +35,8 @@ const isGameLost = ref(false);
 const currentMode = ref(""); // 'wordOfTheDay', 'random' or 'custom'
 const letters = [..."abcdefghijklmnopqrstuvwxyz"];
 const lettersComparison = ref({});
+const customWord = ref("");
+const customLink = ref("");
 
 guesses.value = Array(rows).fill("");
 guessesComparison.value = Array(rows).fill("");
@@ -40,21 +45,15 @@ for (const letter of letters) {
   lettersComparison.value[letter] = "";
 }
 
-const customWord = ref("");
-const customLink = ref("");
-
-const settings = ref({ showDebugInfo: false, onlyOnscreenInput: false });
-
 const toggleTheme = () => {
   if (theme.value === "light") {
     theme.value = "dark";
     document.body.classList.add("dark");
-    localStorage.setItem("theme", "dark");
   } else {
     theme.value = "light";
     document.body.classList.remove("dark");
-    localStorage.setItem("theme", "light");
   }
+  localStorage.setItem("theme", theme.value);
 };
 
 const changeMode = (newMode) => {
@@ -114,8 +113,8 @@ const setLetterComparison = (letter, match) => {
 };
 
 window.addEventListener("keydown", (e) => {
-  if (isGameWon.value || isGameLost.value) return;
-  if (settings.value.onlyOnscreenInput) return;
+  if (isGameWon.value || isGameLost.value || settings.value.onlyOnscreenInput)
+    return;
 
   const key = e.key;
 
