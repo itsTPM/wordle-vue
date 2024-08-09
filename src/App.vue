@@ -37,7 +37,7 @@ guessesComparison.value = Array(rows).fill("");
 const customWord = ref("");
 const customLink = ref("");
 
-const settings = ref({ showDebugInfo: false });
+const settings = ref({ showDebugInfo: false, onlyOnscreenInput: false });
 
 const toggleTheme = () => {
   if (theme.value === "light") {
@@ -93,9 +93,8 @@ const removeLastLetter = () => {
 };
 
 window.addEventListener("keydown", (e) => {
-  if (isGameWon.value || isGameLost.value) {
-    return;
-  }
+  if (isGameWon.value || isGameLost.value) return;
+  if (settings.value.onlyOnscreenInput) return;
 
   const key = e.key;
 
@@ -401,9 +400,20 @@ document.ondblclick = function (e) {
             <DialogContent aria-describedby="undefined">
               <DialogClose></DialogClose>
               <DialogTitle>Settings</DialogTitle>
-              <div class="flex gap-2 py-6">
-                <Switch id="debug" v-model="settings.showDebugInfo"></Switch>
-                <label for="debug"> Show debug info </label>
+              <div class="flex flex-col gap-6 py-6">
+                <div class="flex gap-2">
+                  <Switch id="debug" v-model="settings.showDebugInfo"></Switch>
+                  <label for="debug"> Show debug info </label>
+                </div>
+                <div class="flex gap-2">
+                  <Switch
+                    id="onlyOnscreenInput"
+                    v-model="settings.onlyOnscreenInput"
+                  ></Switch>
+                  <label for="onlyOnscreenInput">
+                    Onscreen keyboard input only
+                  </label>
+                </div>
               </div>
             </DialogContent>
           </template>
