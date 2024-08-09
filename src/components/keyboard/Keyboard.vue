@@ -14,7 +14,7 @@ const keyboard = [
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 w-full select-none">
+  <div class="flex flex-col max-h-xs:gap-1 gap-2 w-full select-none">
     <div
       v-for="row in keyboard"
       :key="row"

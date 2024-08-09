@@ -304,7 +304,7 @@ document.ondblclick = function (e) {
   </div>
 
   <header
-    class="bg-primary relative w-full border-b px-4 flex flex-col items-baseline xs:items-center justify-center gap-2 py-2 xs:py-4"
+    class="bg-primary relative w-full border-b px-4 flex flex-col items-baseline xs:items-center justify-center gap-2 py-2 max-h-xs:py-1 xs:py-4"
   >
     <ul class="absolute bottom-1/2 translate-y-1/2 right-2 flex xs:gap-2">
       <li class="h-12">
@@ -446,7 +446,7 @@ document.ondblclick = function (e) {
     </ul>
 
     <WordleVueLogo
-      class="fill-foreground h-6"
+      class="fill-foreground max-h-xs:h-5 h-6"
       aria-hidden="true"
     ></WordleVueLogo>
 
@@ -459,7 +459,9 @@ document.ondblclick = function (e) {
     </p>
   </header>
 
-  <main class="flex flex-col gap-4 items-center w-full py-2 xs:py-4 relative">
+  <main
+    class="flex flex-col max-h-xs:gap-2 gap-4 items-center w-full pt-2 xs:py-4 relative"
+  >
     <DebugInfo
       :word
       :currentMode
@@ -597,9 +599,9 @@ document.ondblclick = function (e) {
     </div>
 
     <div
-      class="w-72 max-w-80 max-h-96 xs:w-80 xs:h-96 flex flex-col gap-2 select-none"
+      class="w-72 max-w-80 max-h-96 xs:w-80 xs:h-96 flex flex-col max-h-xs:gap-1 select-none gap-2"
     >
-      <div class="w-full h-full flex gap-2" v-for="row in rows">
+      <div class="w-full h-full flex max-h-xs:gap-1 gap-2" v-for="row in rows">
         <span
           v-for="letter in letterLimit"
           class="bg-gray-50 dark:bg-white/5 border-2 h-full aspect-square flex items-center justify-center text-center text-3xl uppercase font-bold transition-all duration-300 w-full"
