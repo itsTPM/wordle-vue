@@ -16,7 +16,7 @@ import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import DebugInfo from "@/components/DebugInfo.vue";
 import WordleVueLogo from "../public/logo-text.svg?component";
-import { todayWord, checkWord } from "@/words.js";
+import { todayWord, randomWord, checkWord } from "@/words.js";
 
 const theme = ref("light");
 
@@ -29,7 +29,7 @@ const guessesComparison = ref([]);
 const currentGuess = ref(0);
 const isGameWon = ref(false);
 const isGameLost = ref(false);
-const currentMode = ref(""); // 'wordOfTheDay' or 'custom'
+const currentMode = ref(""); // 'wordOfTheDay', 'random' or 'custom'
 
 guesses.value = Array(rows).fill("");
 guessesComparison.value = Array(rows).fill("");
@@ -48,6 +48,16 @@ const toggleTheme = () => {
     theme.value = "light";
     document.body.classList.remove("dark");
     localStorage.setItem("theme", "light");
+  }
+};
+
+const changeMode = (newMode) => {
+  currentMode.value = newMode;
+
+  if (newMode === "random") {
+    word.value = randomWord();
+  } else {
+    word.value = todayWord();
   }
 };
 
@@ -405,14 +415,44 @@ document.ondblclick = function (e) {
     ></DebugInfo>
 
     <div class="flex">
-      <p
-        class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs transition-colors text-center"
-      >
-        <template v-if="currentMode === 'wordOfTheDay'">
-          Word of the day
+      <Dialog>
+        <template #trigger>
+          <r-DialogTrigger
+            class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs transition-colors text-center hover:bg-secondary-hover"
+            type="button"
+            as="button"
+            aria-label="Open game mode dialog"
+          >
+            <template v-if="currentMode === 'wordOfTheDay'">
+              Word of the day
+            </template>
+            <template v-if="currentMode === 'random'"> Random word </template>
+            <template v-else-if="currentMode === 'custom'">
+              Custom word
+            </template>
+          </r-DialogTrigger>
         </template>
-        <template v-else-if="currentMode === 'custom'"> Custom word</template>
-      </p>
+        <template #content>
+          <DialogContent aria-describedby="undefined">
+            <DialogClose></DialogClose>
+            <DialogTitle>Change game mode</DialogTitle>
+            <div class="flex gap-2 py-6">
+              <Button
+                class="bg-secondary px-3 py-2 disabled:text-secondary disabled:bg-primary hover:bg-secondary-hover"
+                :disabled="currentMode === 'wordOfTheDay'"
+                @click="changeMode('wordOfTheDay')"
+                >Word of the day</Button
+              >
+              <Button
+                class="bg-secondary px-3 py-2 disabled:text-secondary disabled:bg-primary hover:bg-secondary-hover"
+                :disabled="currentMode === 'random'"
+                @click="changeMode('random')"
+                >Random</Button
+              >
+            </div>
+          </DialogContent>
+        </template>
+      </Dialog>
 
       <Dialog>
         <template #trigger>

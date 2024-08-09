@@ -14,6 +14,12 @@ export const todayWord = () => {
   }
 };
 
+export const randomWord = () => {
+  const randomIndex = Math.floor(Math.random() * allWords.length + 1); // calculate random number between 1 and words array length
+
+  return allWords[randomIndex];
+};
+
 // check if the word is in the list
 export const checkWord = (word) => {
   return !!allWords.includes(word);
