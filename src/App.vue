@@ -220,16 +220,7 @@ onMounted(() => {
     }
   }
 
-  watch(
-    settings,
-    () => {
-      for (const setting in settings.value) {
-        window.localStorage.setItem(setting, settings.value[setting]);
-      }
-    },
-    { deep: true }
-  );
-
+  // Check is user seen guide
   const seenGuide = window.localStorage.getItem("seenGuide");
 
   if (!seenGuide) {
@@ -242,10 +233,8 @@ onMounted(() => {
   const localStorageTheme = window.localStorage.getItem("theme");
 
   if (localStorageTheme) {
-    if (localStorageTheme === "dark") {
-      theme.value = "dark";
-      document.body.classList.add("dark");
-    }
+    theme.value = localStorageTheme;
+    document.body.classList.add(localStorageTheme);
   } else {
     if (
       window.matchMedia &&
@@ -259,6 +248,18 @@ onMounted(() => {
     }
   }
 
+  // Set a watcher for settings changes to save it to localStorage
+  watch(
+    settings,
+    () => {
+      for (const setting in settings.value) {
+        window.localStorage.setItem(setting, settings.value[setting]);
+      }
+    },
+    { deep: true }
+  );
+
+  // Check if current url has word param & set game mode based on it
   let urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("word") && urlParams.get("word") !== "") {
     currentMode.value = "custom";
