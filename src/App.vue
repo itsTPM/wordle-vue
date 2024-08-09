@@ -198,11 +198,8 @@ onMounted(() => {
   // Load settings from localStorage
   for (const setting in settings.value) {
     const settingValue = window.localStorage.getItem(setting);
-    if (
-      settingValue !== null &&
-      settingValue !== undefined &&
-      settingValue !== ""
-    ) {
+
+    if (settingValue) {
       settings.value[setting] = settingValue === "true";
     } else {
       window.localStorage.setItem(setting, settings.value[setting]);
@@ -222,11 +219,7 @@ onMounted(() => {
   // Theme detection
   const localStorageTheme = window.localStorage.getItem("theme");
 
-  if (
-    localStorageTheme !== null &&
-    localStorageTheme !== undefined &&
-    localStorageTheme !== ""
-  ) {
+  if (localStorageTheme) {
     if (localStorageTheme === "dark") {
       theme.value = "dark";
       document.body.classList.add("dark");
