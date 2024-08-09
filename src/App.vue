@@ -1,7 +1,13 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import { Toaster, toast } from "vue-sonner";
-import { IconMoon, IconSun, IconSettings, IconHelp } from "@tabler/icons-vue";
+import {
+  IconMoon,
+  IconSun,
+  IconSettings,
+  IconHelp,
+  IconChartBar,
+} from "@tabler/icons-vue";
 
 import Keyboard from "@/components/keyboard/Keyboard.vue";
 import {
@@ -24,6 +30,23 @@ const settings = ref({
   showDebugInfo: false,
   onlyOnscreenInput: false,
   swapKeyboardButtons: false,
+});
+const statistics = ref({
+  wordOfTheDay: {
+    title: "Word of the day",
+    win: 0,
+    lose: 0,
+  },
+  random: {
+    title: "Random word",
+    win: 0,
+    lose: 0,
+  },
+  custom: {
+    title: "Custom word",
+    win: 0,
+    lose: 0,
+  },
 });
 
 // Game state
@@ -77,6 +100,11 @@ const changeMode = (newMode) => {
   } else {
     word.value = todayWord();
   }
+};
+
+const pushToStatistics = (result) => {
+  statistics.value[currentMode.value][result]++;
+  window.localStorage.setItem("statistics", JSON.stringify(statistics.value));
 };
 
 const makeCustomLink = () => {
@@ -196,11 +224,13 @@ const makeGuess = () => {
   guessesComparison.value[currentGuess.value] = result.join("");
 
   if (guess === target) {
+    pushToStatistics("win");
     toast("You won!", { type: "success" });
     setTimeout(() => {
       isGameWon.value = true;
     }, 1000);
   } else if (currentGuess.value === rows - 1) {
+    pushToStatistics("lose");
     toast("You lost! The word was " + target, { type: "error" });
     isGameLost.value = true;
   }
@@ -246,6 +276,15 @@ onMounted(() => {
     } else {
       window.localStorage.setItem("theme", "light");
     }
+  }
+
+  // Load statistics from localStorage
+  const localStorageStatistics = window.localStorage.getItem("statistics");
+
+  if (localStorageStatistics) {
+    statistics.value = JSON.parse(localStorageStatistics);
+  } else {
+    window.localStorage.setItem("statistics", JSON.stringify(statistics.value));
   }
 
   // Set a watcher for settings changes to save it to localStorage
@@ -462,6 +501,43 @@ document.ondblclick = function (e) {
                   </label>
                 </div>
               </div>
+            </DialogContent>
+          </template>
+        </Dialog>
+      </li>
+      <li class="h-12">
+        <Dialog>
+          <template #trigger>
+            <r-DialogTrigger
+              class="w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
+              type="button"
+              :as="Button"
+              aria-label="Open settings dialog"
+            >
+              <IconChartBar
+                class="w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                aria-hidden="true"
+                stroke-width="2"
+              ></IconChartBar>
+            </r-DialogTrigger>
+          </template>
+          <template #content>
+            <DialogContent aria-describedby="undefined">
+              <DialogClose></DialogClose>
+              <DialogTitle>Statistics</DialogTitle>
+              <template v-for="(gameMode, _, idx) in statistics">
+                <div class="flex flex-col gap-1">
+                  <p class="font-semibold">{{ gameMode.title }}</p>
+                  <ul>
+                    <li>Wins: {{ gameMode.win }}</li>
+                    <li>Loses: {{ gameMode.lose }}</li>
+                  </ul>
+                </div>
+                <hr
+                  class="my-4"
+                  v-if="idx != Object.keys(statistics).length - 1"
+                />
+              </template>
             </DialogContent>
           </template>
         </Dialog>
