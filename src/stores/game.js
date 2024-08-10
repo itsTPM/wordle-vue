@@ -129,8 +129,10 @@ export const useGameStore = defineStore("game", {
         (match === "X" && this.lettersComparison[letter] === "Y") ||
         (match === "N" && this.lettersComparison[letter] === "X") ||
         (match === "N" && this.lettersComparison[letter] === "Y")
-      )
+      ) {
         return;
+      }
+
       this.lettersComparison[letter] = match;
     },
   },
