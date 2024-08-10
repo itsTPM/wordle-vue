@@ -29,11 +29,13 @@ import { useSettingsStore } from "./stores/settings";
 import { useThemeStore } from "./stores/theme";
 import { useGameStore } from "./stores/game";
 import { useCustomsStore } from "./stores/customs";
+import { useGuideStore } from "./stores/guide";
 const statisticsStore = useStatisticsStore();
 const settingsStore = useSettingsStore();
 const themeStore = useThemeStore();
 const gameStore = useGameStore();
 const customsStore = useCustomsStore();
+const guideStore = useGuideStore();
 
 const guideDialogOpen = ref(false);
 
@@ -75,18 +77,15 @@ onMounted(() => {
   themeStore.detectSystemTheme();
 
   // Check is user seen guide
-  const seenGuide = window.localStorage.getItem("seenGuide");
-
-  if (!seenGuide) {
-    window.localStorage.setItem("seenGuide", "true");
-
+  if (!guideStore.seenGuide) {
+    guideStore.seenGuide = true;
     guideDialogOpen.value = true;
   }
 
   // Check if current url has word param & set game mode based on it
-  let urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("word") && urlParams.get("word") !== "") {
-    gameStore.currentGameMode = "custom";
+    gameStore.changeGameMode("custom");
     try {
       gameStore.word = atob(urlParams.get("word"));
     } catch (e) {
