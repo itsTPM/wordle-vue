@@ -22,7 +22,6 @@ import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import DebugInfo from "@/components/DebugInfo.vue";
 import WordleVueLogo from "../public/logo-text.svg?component";
-import { todayWord, randomWord, checkWord } from "@/words.js";
 
 import { useStatisticsStore } from "@/stores/statistics";
 const statisticsStore = useStatisticsStore();
@@ -33,55 +32,18 @@ const settingsStore = useSettingsStore();
 import { useThemeStore } from "./stores/theme";
 const themeStore = useThemeStore();
 
-// App state
+import { useGameStore } from "./stores/game";
+const gameStore = useGameStore();
 
-// Game state
-const letterLimit = 5;
-const rows = 6;
-const word = ref("");
-const inputWord = ref("");
-const guesses = ref([]);
-const guessesComparison = ref([]);
-const currentGuess = ref(0);
-const isGameWon = ref(false);
-const isGameLost = ref(false);
-const currentMode = ref(""); // 'wordOfTheDay', 'random' or 'custom'
-const letters = [..."abcdefghijklmnopqrstuvwxyz"];
-const lettersComparison = ref({});
+const guideDialogOpen = ref(false);
+
+// customs start
 const customWord = ref("");
 const customLink = ref("");
-
-guesses.value = Array(rows).fill("");
-guessesComparison.value = Array(rows).fill("");
-
-for (const letter of letters) {
-  lettersComparison.value[letter] = "";
-}
-
-const changeMode = (newMode) => {
-  currentMode.value = newMode;
-
-  currentGuess.value = 0;
-  inputWord.value = "";
-  guesses.value = Array(rows).fill("");
-  guessesComparison.value = Array(rows).fill("");
-
-  for (const letter of letters) {
-    lettersComparison.value[letter] = "";
-  }
-
-  if (newMode === "random") {
-    word.value = randomWord();
-  } else {
-    word.value = todayWord();
-  }
-};
-
 const makeCustomLink = () => {
   const b64Word = btoa(customWord.value);
   customLink.value = `${window.location.origin}/?word=${b64Word}`;
 };
-
 const copyCustomLink = async () => {
   try {
     await navigator.clipboard.writeText(customLink.value);
@@ -90,38 +52,16 @@ const copyCustomLink = async () => {
     toast("Cannot copy", { type: "error" });
   }
 };
-
 const resetCustomDialog = () => {
   customWord.value = "";
   customLink.value = "";
 };
-
-const addLetter = (letter) => {
-  if (inputWord.value.length < letterLimit) {
-    inputWord.value += letter.toLowerCase();
-    guesses.value[currentGuess.value] = inputWord.value;
-  }
-};
-
-const removeLastLetter = () => {
-  inputWord.value = inputWord.value.slice(0, -1);
-  guesses.value[currentGuess.value] = inputWord.value;
-};
-
-const setLetterComparison = (letter, match) => {
-  if (
-    (match === "X" && lettersComparison.value[letter] === "Y") ||
-    (match === "N" && lettersComparison.value[letter] === "X") ||
-    (match === "N" && lettersComparison.value[letter] === "Y")
-  )
-    return;
-  lettersComparison.value[letter] = match;
-};
+// customs end
 
 window.addEventListener("keydown", (e) => {
   if (
-    isGameWon.value ||
-    isGameLost.value ||
+    gameStore.isGameWon ||
+    gameStore.isGameLost ||
     settingsStore.onlyOnscreenInput.value
   )
     return;
@@ -132,89 +72,16 @@ window.addEventListener("keydown", (e) => {
   const isLetter = key.toLowerCase() !== key.toUpperCase() && key.length === 1;
 
   if (isLetter) {
-    addLetter(key);
+    gameStore.addLetter(key);
   } else {
     if (key === "Backspace") {
-      removeLastLetter();
+      gameStore.removeLastLetter();
     }
     if (key === "Enter") {
-      makeGuess();
+      gameStore.makeGuess();
     }
   }
 });
-
-const guideDialogOpen = ref(false);
-
-const makeGuess = () => {
-  if (inputWord.value.length !== letterLimit) {
-    toast("Not enough letters!");
-    return;
-  }
-
-  if (!checkWord(inputWord.value)) {
-    toast("Not a valid word!");
-    return;
-  }
-
-  const guess = inputWord.value;
-  const target = word.value;
-  inputWord.value = "";
-
-  const result = Array(letterLimit).fill("N");
-  const targetLetterCount = {};
-
-  // Count the letters in the target word
-  for (const letter of target) {
-    targetLetterCount[letter] = (targetLetterCount[letter] || 0) + 1;
-  }
-
-  // First pass: find correct letters (Y)
-  for (let i = 0; i < letterLimit; i++) {
-    if (guess[i] === target[i]) {
-      result[i] = "Y";
-      targetLetterCount[guess[i]]--;
-      setLetterComparison(target[i], "Y");
-    }
-  }
-
-  // Second pass: find misplaced letters (X)
-  for (let i = 0; i < letterLimit; i++) {
-    if (
-      result[i] !== "Y" &&
-      target.includes(guess[i]) &&
-      targetLetterCount[guess[i]] > 0
-    ) {
-      result[i] = "X";
-      targetLetterCount[guess[i]]--;
-      setLetterComparison(guess[i], "X");
-    }
-  }
-
-  for (let i = 0; i < result.length; i++) {
-    const letter = result[i];
-
-    if (letter == "N") {
-      setLetterComparison(guess[i], "N");
-    }
-  }
-
-  guesses.value[currentGuess.value] = guess;
-  guessesComparison.value[currentGuess.value] = result.join("");
-
-  if (guess === target) {
-    statisticsStore.pushToStatistics(currentMode.value, "win");
-    toast("You won!", { type: "success" });
-    setTimeout(() => {
-      isGameWon.value = true;
-    }, 1000);
-  } else if (currentGuess.value === rows - 1) {
-    statisticsStore.pushToStatistics(currentMode.value, "lose");
-    toast("You lost! The word was " + target, { type: "error" });
-    isGameLost.value = true;
-  }
-
-  currentGuess.value++;
-};
 
 onMounted(() => {
   themeStore.detectSystemTheme();
@@ -231,9 +98,9 @@ onMounted(() => {
   // Check if current url has word param & set game mode based on it
   let urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("word") && urlParams.get("word") !== "") {
-    currentMode.value = "custom";
+    gameStore.currentGameMode = "custom";
     try {
-      word.value = atob(urlParams.get("word"));
+      gameStore.word = atob(urlParams.get("word"));
     } catch (e) {
       toast(
         "Error decoding the custom word parameter. Game mode switched to word of the day",
@@ -243,25 +110,22 @@ onMounted(() => {
         }
       );
 
-      currentMode.value = "wordOfTheDay";
-      word.value = todayWord();
+      gameStore.changeGameMode("wordOfTheDay");
       return;
     }
-    if (atob(urlParams.get("word")).length !== letterLimit) {
+    if (atob(urlParams.get("word")).length !== gameStore.letterLimit) {
       toast(
-        `Custom word must be exactly ${letterLimit} letters long. Game mode switched to word of the day`,
+        `Custom word must be exactly ${gameStore.letterLimit} letters long. Game mode switched to word of the day`,
         {
           type: "error",
           duration: 3000,
         }
       );
 
-      currentMode.value = "wordOfTheDay";
-      word.value = todayWord();
+      gameStore.changeGameMode("wordOfTheDay");
     }
   } else {
-    currentMode.value = "wordOfTheDay";
-    word.value = todayWord();
+    gameStore.changeGameMode("wordOfTheDay");
   }
 });
 
@@ -283,7 +147,7 @@ document.ondblclick = function (e) {
   <div
     class="absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-[rgba(0,0,0,0.25)] z-10 backdrop-blur-md transition-all duration-300 flex items-center justify-center"
     :class="
-      isGameWon
+      gameStore.isGameWon
         ? ['translate-y-0', 'visible']
         : ['-translate-y-full', 'invisible']
     "
@@ -376,13 +240,13 @@ document.ondblclick = function (e) {
                 <div
                   class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs text-center max-w-48 select-none"
                 >
-                  <template v-if="currentMode === 'wordOfTheDay'">
+                  <template v-if="gameStore.currentGameMode === 'wordOfTheDay'">
                     Word of the day
                   </template>
-                  <template v-if="currentMode === 'random'">
+                  <template v-if="gameStore.currentGameMode === 'random'">
                     Random word
                   </template>
-                  <template v-else-if="currentMode === 'custom'">
+                  <template v-else-if="gameStore.currentGameMode === 'custom'">
                     Custom word
                   </template>
                 </div>
@@ -484,14 +348,14 @@ document.ondblclick = function (e) {
     class="flex flex-col max-h-xs:gap-2 gap-4 items-center w-full pt-2 xs:py-4 relative"
   >
     <DebugInfo
-      :word
-      :currentMode
-      :inputWord
-      :currentGuess
-      :guesses
-      :guessesComparison
-      :isGameWon
-      :isGameLost
+      :word="gameStore.word"
+      :currentMode="gameStore.currentGameMode"
+      :inputWord="gameStore.inputWord"
+      :currentGuess="gameStore.currentGuess"
+      :guesses="gameStore.guesses"
+      :guessesComparison="gameStore.guessesComparison"
+      :isGameWon="gameStore.isGameWon"
+      :isGameLost="gameStore.isGameLost"
       v-if="settingsStore.showDebugInfo.value"
     ></DebugInfo>
 
@@ -504,11 +368,13 @@ document.ondblclick = function (e) {
             as="button"
             aria-label="Open game mode dialog"
           >
-            <template v-if="currentMode === 'wordOfTheDay'">
+            <template v-if="gameStore.currentGameMode === 'wordOfTheDay'">
               Word of the day
             </template>
-            <template v-if="currentMode === 'random'"> Random word </template>
-            <template v-else-if="currentMode === 'custom'">
+            <template v-if="gameStore.currentGameMode === 'random'">
+              Random word
+            </template>
+            <template v-else-if="gameStore.currentGameMode === 'custom'">
               Custom word
             </template>
           </r-DialogTrigger>
@@ -622,34 +488,39 @@ document.ondblclick = function (e) {
     <div
       class="w-72 max-w-80 max-h-96 xs:w-80 xs:h-96 flex flex-col max-h-xs:gap-1 select-none gap-2"
     >
-      <div class="w-full h-full flex max-h-xs:gap-1 gap-2" v-for="row in rows">
+      <div
+        class="w-full h-full flex max-h-xs:gap-1 gap-2"
+        v-for="row in gameStore.rows"
+      >
         <span
-          v-for="letter in letterLimit"
+          v-for="letter in gameStore.letterLimit"
           class="bg-gray-50 dark:bg-white/5 border-2 h-full aspect-square flex items-center justify-center text-center text-3xl uppercase font-bold transition-all duration-300 w-full"
           :class="[
-            guessesComparison[row - 1]?.charAt(letter - 1) === 'N'
+            gameStore.guessesComparison[row - 1]?.charAt(letter - 1) === 'N'
               ? ['!bg-gray', 'text-white', 'border-gray']
               : '',
-            guessesComparison[row - 1]?.charAt(letter - 1) === 'Y'
+            gameStore.guessesComparison[row - 1]?.charAt(letter - 1) === 'Y'
               ? ['!bg-green', 'text-white', 'border-green']
               : '',
-            guessesComparison[row - 1]?.charAt(letter - 1) === 'X'
+            gameStore.guessesComparison[row - 1]?.charAt(letter - 1) === 'X'
               ? ['!bg-yellow', 'text-white', 'border-yellow']
               : '',
-            guesses[row - 1]?.charAt(letter - 1) ? ['animate-typing'] : '',
+            gameStore.guesses[row - 1]?.charAt(letter - 1)
+              ? ['animate-typing']
+              : '',
           ]"
         >
-          {{ guesses[row - 1]?.charAt(letter - 1) }}
+          {{ gameStore.guesses[row - 1]?.charAt(letter - 1) }}
         </span>
       </div>
     </div>
 
     <Keyboard
-      :lettersComparison
+      :lettersComparison="gameStore.lettersComparison"
       :swapKeyboardButtons="settingsStore.swapKeyboardButtons.value"
-      @addLetter="(letter) => addLetter(letter)"
-      @makeGuess="makeGuess"
-      @removeLastLetter="removeLastLetter"
+      @addLetter="(letter) => gameStore.addLetter(letter)"
+      @makeGuess="gameStore.makeGuess"
+      @removeLastLetter="gameStore.removeLastLetter"
     ></Keyboard>
   </main>
 </template>
