@@ -4,12 +4,15 @@
 
 [Wordle](https://www.nytimes.com/games/wordle/index.html) game implementation with Vue.js
 
-This is my personal learning project, not claiming to be fully compliant with the rules of the original game
+This is my personal learning project, not claiming to be fully compliant with the rules of the original game.
+
+Found a bug or have an idea? Feel free to open an [issue](https://github.com/itsTPM/wordle-vue/issues) or [pull request](https://github.com/itsTPM/wordle-vue/pulls).
 
 ### Stack
 
 - Vue 3
 - Vite
+- Pinia
 - TailwindCSS
 - PostCSS with Autoprefixer
 
@@ -24,7 +27,7 @@ This is my personal learning project, not claiming to be fully compliant with th
 - [x] On-screen keyboard
 - [x] Mobile responsive
 - [x] Game settings
-- [ ] Local statistics
+- [x] Local statistics
 - [x] Light/Dark themes
 - [ ] Internationalization
   - [x] English
