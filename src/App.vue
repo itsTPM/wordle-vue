@@ -173,7 +173,7 @@ document.ondblclick = function (e) {
   </div>
 
   <header
-    class="bg-primary relative w-full border-b px-4 flex flex-col items-baseline xs:items-center justify-center gap-2 py-2 max-h-xs:py-1 xs:py-4"
+    class="bg-primary relative w-full border-b px-4 flex flex-col items-baseline md:items-center justify-center gap-2 py-2 max-h-xs:py-1"
   >
     <ul class="absolute bottom-1/2 translate-y-1/2 right-2 flex xs:gap-2">
       <li class="h-12">
@@ -385,7 +385,7 @@ document.ondblclick = function (e) {
   </header>
 
   <main
-    class="flex flex-col max-h-xs:gap-2 gap-4 items-center w-full pt-2 xs:py-4 relative"
+    class="flex flex-col max-h-xs:gap-2 gap-4 items-center w-full pt-2 min-h-xs:py-4 relative"
   >
     <DebugInfo v-if="settingsStore.showDebugInfo.value"></DebugInfo>
 

@@ -7,6 +7,7 @@ export default {
       screens: {
         xs: "540px",
         "max-h-xs": { raw: "(max-height: 700px)" },
+        "min-h-xs": { raw: "(min-height: 700px)" },
       },
       colors: {
         background: "var(--background)",
