@@ -21,6 +21,9 @@ export const randomWord = () => {
 };
 
 // check if the word is in the list
-export const checkWord = (word) => {
+export const checkWord = (word, customWord) => {
+  if (customWord) {
+    return !![...allWords, customWord].includes(word);
+  }
   return !!allWords.includes(word);
 };

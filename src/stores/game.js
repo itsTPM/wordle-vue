@@ -62,9 +62,16 @@ export const useGameStore = defineStore("game", {
         return;
       }
 
-      if (!checkWord(this.inputWord)) {
-        toast("Not a valid word!");
-        return;
+      if (this.currentGameMode === "custom") {
+        if (!checkWord(this.inputWord, this.word)) {
+          toast("Not a valid word!");
+          return;
+        }
+      } else {
+        if (!checkWord(this.inputWord)) {
+          toast("Not a valid word!");
+          return;
+        }
       }
 
       const guess = this.inputWord;
