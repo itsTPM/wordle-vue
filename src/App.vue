@@ -74,6 +74,8 @@ window.addEventListener("keydown", (e) => {
 });
 
 onMounted(() => {
+  const urlParams = new URLSearchParams(window.location.search);
+
   themeStore.initTheme();
 
   // Check is user seen guide
@@ -82,8 +84,17 @@ onMounted(() => {
     guideDialogOpen.value = true;
   }
 
+  // Check if current url has statistics param & set statistics based on it
+  if (urlParams.has("statistics") && urlParams.get("statistics") !== "") {
+    try {
+      statisticsStore.$state = JSON.parse(urlParams.get("statistics"));
+      toast("Statistics imported successfully", { type: "success" });
+    } catch (e) {
+      toast("Error importing statistics", { type: "error" });
+    }
+  }
+
   // Check if current url has word param & set game mode based on it
-  const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("word") && urlParams.get("word") !== "") {
     gameStore.changeGameMode("custom");
     try {
@@ -354,16 +365,28 @@ document.ondblclick = function (e) {
               <template v-for="(gameMode, _, idx) in statisticsStore.$state">
                 <div class="flex flex-col gap-1">
                   <p class="font-semibold">{{ gameMode.title }}</p>
-                  <ul>
+                  <ul v-if="gameMode.win || gameMode.lose">
                     <li>Wins: {{ gameMode.win }}</li>
                     <li>Loses: {{ gameMode.lose }}</li>
                   </ul>
+                  <p v-else class="text-black/50 dark:text-white/50">
+                    No games played in this mode yet
+                  </p>
                 </div>
                 <hr
                   class="my-4"
                   v-if="idx != Object.keys(statisticsStore.$state).length - 1"
                 />
               </template>
+              <Button
+                class="bg-secondary px-6 py-2 text-secondary-foreground hover:bg-secondary-hover w-full mt-4"
+                @click="copyToClipboard(statisticsStore.exportStatistics())"
+              >
+                Export statistics
+              </Button>
+              <p class="text-sm mt-1 text-black/50 dark:text-white/50">
+                Follow the copied URL on any device to transfer statistics
+              </p>
             </DialogContent>
           </template>
         </Dialog>

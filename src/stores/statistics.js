@@ -24,6 +24,12 @@ export const useStatisticsStore = defineStore("statistics", {
     pushToStatistics(mode, result) {
       this[mode][result]++;
     },
+    exportStatistics() {
+      const url = new URL(window.location.origin);
+      url.searchParams.append("statistics", JSON.stringify(this.$state));
+
+      return url.href;
+    },
   },
   persist: true,
 });
