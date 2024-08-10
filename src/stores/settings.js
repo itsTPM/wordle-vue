@@ -17,10 +17,6 @@ export const useSettingsStore = defineStore("settings", {
       },
     };
   },
-  actions: {
-    pushToStatistics(mode, result) {
-      this[mode][result]++;
-    },
-  },
+  actions: {},
   persist: true,
 });
