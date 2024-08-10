@@ -24,6 +24,9 @@ import DebugInfo from "@/components/DebugInfo.vue";
 import WordleVueLogo from "../public/logo-text.svg?component";
 import { todayWord, randomWord, checkWord } from "@/words.js";
 
+import { useStatisticsStore } from "@/stores/statistics";
+const statisticsStore = useStatisticsStore();
+
 // App state
 const theme = ref("light");
 const settings = ref({
@@ -38,23 +41,6 @@ const settings = ref({
   swapKeyboardButtons: {
     title: "Swap 'Enter' and 'Backspace' buttons",
     value: false,
-  },
-});
-const statistics = ref({
-  wordOfTheDay: {
-    title: "Word of the day",
-    win: 0,
-    lose: 0,
-  },
-  random: {
-    title: "Random word",
-    win: 0,
-    lose: 0,
-  },
-  custom: {
-    title: "Custom word",
-    win: 0,
-    lose: 0,
   },
 });
 
@@ -109,11 +95,6 @@ const changeMode = (newMode) => {
   } else {
     word.value = todayWord();
   }
-};
-
-const pushToStatistics = (result) => {
-  statistics.value[currentMode.value][result]++;
-  window.localStorage.setItem("statistics", JSON.stringify(statistics.value));
 };
 
 const makeCustomLink = () => {
@@ -241,13 +222,13 @@ const makeGuess = () => {
   guessesComparison.value[currentGuess.value] = result.join("");
 
   if (guess === target) {
-    pushToStatistics("win");
+    statisticsStore.pushToStatistics(currentMode.value, "win");
     toast("You won!", { type: "success" });
     setTimeout(() => {
       isGameWon.value = true;
     }, 1000);
   } else if (currentGuess.value === rows - 1) {
-    pushToStatistics("lose");
+    statisticsStore.pushToStatistics(currentMode.value, "lose");
     toast("You lost! The word was " + target, { type: "error" });
     isGameLost.value = true;
   }
@@ -293,15 +274,6 @@ onMounted(() => {
     } else {
       window.localStorage.setItem("theme", "light");
     }
-  }
-
-  // Load statistics from localStorage
-  const localStorageStatistics = window.localStorage.getItem("statistics");
-
-  if (localStorageStatistics) {
-    statistics.value = JSON.parse(localStorageStatistics);
-  } else {
-    window.localStorage.setItem("statistics", JSON.stringify(statistics.value));
   }
 
   // Set a watcher for settings changes to save it to localStorage
@@ -524,7 +496,7 @@ document.ondblclick = function (e) {
             <DialogContent aria-describedby="undefined">
               <DialogClose></DialogClose>
               <DialogTitle>Statistics</DialogTitle>
-              <template v-for="(gameMode, _, idx) in statistics">
+              <template v-for="(gameMode, _, idx) in statisticsStore.$state">
                 <div class="flex flex-col gap-1">
                   <p class="font-semibold">{{ gameMode.title }}</p>
                   <ul>
@@ -534,7 +506,7 @@ document.ondblclick = function (e) {
                 </div>
                 <hr
                   class="my-4"
-                  v-if="idx != Object.keys(statistics).length - 1"
+                  v-if="idx != Object.keys(statisticsStore.$state).length - 1"
                 />
               </template>
             </DialogContent>
