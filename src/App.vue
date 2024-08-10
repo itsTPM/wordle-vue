@@ -551,7 +551,7 @@ document.ondblclick = function (e) {
     <h1 class="sr-only">Wordle Vue game</h1>
 
     <p
-      class="uppercase tracking-wide font-extrabold text-xs text-black/25 dark:text-white/25 -mt-1"
+      class="uppercase tracking-wide font-extrabold text-xs text-black/25 dark:text-white/25 -mt-1 select-none"
     >
       in development
     </p>
@@ -576,7 +576,7 @@ document.ondblclick = function (e) {
       <Dialog>
         <template #trigger>
           <r-DialogTrigger
-            class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs transition-colors text-center hover:bg-secondary-hover"
+            class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs transition-colors text-center hover:bg-secondary-hover select-none"
             type="button"
             as="button"
             aria-label="Open game mode dialog"
