@@ -3,8 +3,11 @@ import { IconBackspace, IconCornerDownLeft } from "@tabler/icons-vue";
 
 import KeyboardButton from "@/components/keyboard/KeyboardButton.vue";
 
-const emits = defineEmits(["addLetter", "makeGuess", "removeLastLetter"]);
-const props = defineProps(["lettersComparison", "swapKeyboardButtons"]);
+// Stores
+import { useSettingsStore } from "@/stores/settings";
+import { useGameStore } from "@/stores/game";
+const settingsStore = useSettingsStore();
+const gameStore = useGameStore();
 
 const keyboard = [
   ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
@@ -24,26 +27,26 @@ const keyboard = [
         v-if="keyboard.indexOf(row) === keyboard.length - 1"
         class="bg-secondary hover:bg-secondary-hover xs:!aspect-[1.5/1] text-secondary-foreground"
         :class="{
-          'order-2': swapKeyboardButtons,
+          'order-2': settingsStore.swapKeyboardButtons.value,
         }"
-        @click="$emit('removeLastLetter')"
+        @click="gameStore.removeLastLetter"
         aria-label="Remove last letter"
       >
         <IconBackspace
           class="w-8 rotate-180"
           :class="{
-            'rotate-0': swapKeyboardButtons,
+            'rotate-0': settingsStore.swapKeyboardButtons.value,
           }"
           stroke-width="1.5"
           aria-hidden="true"
         ></IconBackspace>
       </KeyboardButton>
       <KeyboardButton
-        @click="$emit('addLetter', key)"
+        @click="gameStore.addLetter(key)"
         :class="{
-          '!bg-green': lettersComparison[key] == 'Y',
-          '!bg-yellow': lettersComparison[key] == 'X',
-          '!bg-gray': lettersComparison[key] == 'N',
+          '!bg-green': gameStore.lettersComparison[key] == 'Y',
+          '!bg-yellow': gameStore.lettersComparison[key] == 'X',
+          '!bg-gray': gameStore.lettersComparison[key] == 'N',
         }"
         v-for="key in row"
         :key="key"
@@ -54,15 +57,15 @@ const keyboard = [
         v-if="keyboard.indexOf(row) === keyboard.length - 1"
         class="bg-secondary hover:bg-secondary-hover xs:!aspect-[1.5/1] text-secondary-foreground"
         :class="{
-          '-order-1': swapKeyboardButtons,
+          '-order-1': settingsStore.swapKeyboardButtons.value,
         }"
-        @click="$emit('makeGuess')"
+        @click="gameStore.makeGuess"
         aria-label="Make a guess"
       >
         <IconCornerDownLeft
           class="w-8"
           :class="{
-            'rotate-180': swapKeyboardButtons,
+            'rotate-180': settingsStore.swapKeyboardButtons.value,
           }"
           stroke-width="1.5"
           aria-hidden="true"

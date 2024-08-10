@@ -502,12 +502,6 @@ document.ondblclick = function (e) {
       </div>
     </div>
 
-    <Keyboard
-      :lettersComparison="gameStore.lettersComparison"
-      :swapKeyboardButtons="settingsStore.swapKeyboardButtons.value"
-      @addLetter="(letter) => gameStore.addLetter(letter)"
-      @makeGuess="gameStore.makeGuess"
-      @removeLastLetter="gameStore.removeLastLetter"
-    ></Keyboard>
+    <Keyboard></Keyboard>
   </main>
 </template>
