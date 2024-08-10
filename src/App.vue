@@ -23,40 +23,28 @@ import Input from "@/components/Input.vue";
 import DebugInfo from "@/components/DebugInfo.vue";
 import WordleVueLogo from "../public/logo-text.svg?component";
 
+// Stores
 import { useStatisticsStore } from "@/stores/statistics";
-const statisticsStore = useStatisticsStore();
-
 import { useSettingsStore } from "./stores/settings";
-const settingsStore = useSettingsStore();
-
 import { useThemeStore } from "./stores/theme";
-const themeStore = useThemeStore();
-
 import { useGameStore } from "./stores/game";
+import { useCustomsStore } from "./stores/customs";
+const statisticsStore = useStatisticsStore();
+const settingsStore = useSettingsStore();
+const themeStore = useThemeStore();
 const gameStore = useGameStore();
+const customsStore = useCustomsStore();
 
 const guideDialogOpen = ref(false);
 
-// customs start
-const customWord = ref("");
-const customLink = ref("");
-const makeCustomLink = () => {
-  const b64Word = btoa(customWord.value);
-  customLink.value = `${window.location.origin}/?word=${b64Word}`;
-};
-const copyCustomLink = async () => {
+async function copyToClipboard(text) {
   try {
-    await navigator.clipboard.writeText(customLink.value);
-    toast("Link copied!", { type: "success" });
+    await navigator.clipboard.writeText(text);
+    toast("Copied to clipboard!", { type: "success" });
   } catch (err) {
     toast("Cannot copy", { type: "error" });
   }
-};
-const resetCustomDialog = () => {
-  customWord.value = "";
-  customLink.value = "";
-};
-// customs end
+}
 
 window.addEventListener("keydown", (e) => {
   if (
@@ -422,19 +410,19 @@ document.ondblclick = function (e) {
           <DialogContent>
             <DialogClose></DialogClose>
             <DialogTitle>Make wordle with your word!</DialogTitle>
-            <template v-if="customLink === ''">
+            <template v-if="customsStore.customLink === ''">
               <DialogDescription>
                 Enter any word and get a special link to share with your friend
               </DialogDescription>
               <form
                 class="flex flex-col xs:grid w-full gap-2 grid-rows-1 grid-cols-4"
-                @submit.prevent="makeCustomLink"
+                @submit.prevent="customsStore.makeCustomLink"
               >
                 <Input
                   placeholder="Your word"
                   type="text"
                   name="customWord"
-                  v-model="customWord"
+                  v-model="customsStore.customWord"
                   required
                   maxlength="5"
                   minlength="5"
@@ -460,19 +448,19 @@ document.ondblclick = function (e) {
                   type="text"
                   disabled
                   name="customLink"
-                  v-model="customLink"
+                  v-model="customsStore.customLink"
                   class="col-span-3 text-gray-400"
                 />
                 <Button
                   class="p-2 bg-[#6a85c9] text-white border-[#405895] hover:bg-[#8699c7] hover:border-[#646f8b] border"
-                  @click="copyCustomLink"
+                  @click="copyToClipboard(customsStore.customLink)"
                 >
                   Copy
                 </Button>
               </div>
               <p class="text-xs text-black/50 dark:text-white/50 mt-2">
                 <Button
-                  @click="resetCustomDialog"
+                  @click="customsStore.resetCustoms"
                   class="underline hover:text-secondary-hover hover:underline-offset-4 underline-offset-2 transition-all"
                 >
                   Click here
