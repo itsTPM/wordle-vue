@@ -6,7 +6,7 @@ export default {
     extend: {
       screens: {
         xs: "540px",
-        "max-h-xs": { raw: "(max-height: 660px)" },
+        "max-h-xs": { raw: "(max-height: 700px)" },
       },
       colors: {
         background: "var(--background)",
