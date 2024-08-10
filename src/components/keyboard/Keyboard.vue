@@ -18,11 +18,7 @@ const keyboard = [
 
 <template>
   <div class="flex flex-col max-h-xs:gap-1 gap-2 w-full select-none">
-    <div
-      v-for="row in keyboard"
-      :key="row"
-      class="flex gap-1 items-center justify-center w-full"
-    >
+    <div v-for="row in keyboard" :key="row" class="flex gap-1 items-center justify-center w-full">
       <KeyboardButton
         v-if="keyboard.indexOf(row) === keyboard.length - 1"
         class="bg-secondary hover:bg-secondary-hover xs:!aspect-[1.5/1] text-secondary-foreground"
@@ -30,16 +26,14 @@ const keyboard = [
           'order-2': settingsStore.swapKeyboardButtons.value,
         }"
         @click="gameStore.removeLastLetter"
-        aria-label="Remove last letter"
-      >
+        aria-label="Remove last letter">
         <IconBackspace
           class="w-8 rotate-180"
           :class="{
             'rotate-0': settingsStore.swapKeyboardButtons.value,
           }"
           stroke-width="1.5"
-          aria-hidden="true"
-        ></IconBackspace>
+          aria-hidden="true"></IconBackspace>
       </KeyboardButton>
       <KeyboardButton
         @click="gameStore.addLetter(key)"
@@ -50,8 +44,7 @@ const keyboard = [
           '!bg-gray': gameStore.lettersComparison[key] === 'N',
         }"
         v-for="key in row"
-        :key="key"
-      >
+        :key="key">
         {{ key }}
       </KeyboardButton>
       <KeyboardButton
@@ -61,16 +54,14 @@ const keyboard = [
           '-order-1': settingsStore.swapKeyboardButtons.value,
         }"
         @click="gameStore.makeGuess"
-        aria-label="Make a guess"
-      >
+        aria-label="Make a guess">
         <IconCornerDownLeft
           class="w-8"
           :class="{
             'rotate-180': settingsStore.swapKeyboardButtons.value,
           }"
           stroke-width="1.5"
-          aria-hidden="true"
-        ></IconCornerDownLeft>
+          aria-hidden="true"></IconCornerDownLeft>
       </KeyboardButton>
     </div>
   </div>
