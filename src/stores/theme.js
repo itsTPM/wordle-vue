@@ -29,7 +29,10 @@ export const useThemeStore = defineStore("theme", {
     },
 
     detectSystemTheme() {
-      if (this.themeWasDetected) return;
+      if (this.themeWasDetected) {
+        this.toggleTheme(this.currentTheme);
+        return;
+      }
 
       if (
         window.matchMedia &&
