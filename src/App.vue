@@ -97,7 +97,7 @@ onMounted(() => {
         }
       );
 
-      gameStore.changeGameMode("wordOfTheDay");
+      gameStore.changeGameMode(settingsStore.defaultGameMode.value);
       return;
     }
     if (atob(urlParams.get("word")).length !== gameStore.letterLimit) {
@@ -109,10 +109,10 @@ onMounted(() => {
         }
       );
 
-      gameStore.changeGameMode("wordOfTheDay");
+      gameStore.changeGameMode(settingsStore.defaultGameMode.value);
     }
   } else {
-    gameStore.changeGameMode("wordOfTheDay");
+    gameStore.changeGameMode(settingsStore.defaultGameMode.value);
   }
 });
 
@@ -300,8 +300,31 @@ document.ondblclick = function (e) {
                   class="flex gap-2"
                   v-for="(setting, keyName) in settingsStore.$state"
                 >
-                  <Switch :id="keyName" v-model="setting.value"></Switch>
-                  <label :for="keyName"> {{ setting.title }} </label>
+                  <Switch
+                    :id="keyName"
+                    v-model="setting.value"
+                    v-if="setting.type === 'switch'"
+                  ></Switch>
+                  <select
+                    class="px-4 py-2 bg-input border rounded-md focus-visible:outline outline-2 outline-offset-2 outline-blue-400 text-foreground"
+                    :name="keyName"
+                    :id="keyName"
+                    v-model="setting.value"
+                    v-else-if="setting.type === 'select'"
+                  >
+                    <option
+                      v-for="(option, idx) in setting.options"
+                      :key="idx"
+                      :value="option.value"
+                    >
+                      {{ option.title }}
+                    </option>
+                  </select>
+                  <div class="flex items-center">
+                    <label :for="keyName">
+                      {{ setting.title }}
+                    </label>
+                  </div>
                 </li>
               </ul>
             </DialogContent>
