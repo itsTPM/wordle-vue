@@ -1,36 +1,36 @@
-import { defineStore } from "pinia";
-import { todayWord, randomWord, checkWord } from "@/words.js";
-import { useStatisticsStore } from "./statistics.js";
-import { toast } from "vue-sonner";
+import { checkWord, randomWord, todayWord } from '@/words.js';
+import { defineStore } from 'pinia';
+import { toast } from 'vue-sonner';
+import { useStatisticsStore } from './statistics.js';
 
-export const useGameStore = defineStore("game", {
+export const useGameStore = defineStore('game', {
   state: () => {
     return {
       letterLimit: 5,
       rows: 6,
-      word: "",
-      inputWord: "",
+      word: '',
+      inputWord: '',
       guesses: [],
       currentGuess: 0,
       isGameWon: false,
       isGameLost: false,
-      currentGameMode: "wordOfTheDay", // 'wordOfTheDay', 'random' or 'custom'
+      currentGameMode: 'wordOfTheDay', // 'wordOfTheDay', 'random' or 'custom'
       guessesComparison: [],
-      letters: [..."abcdefghijklmnopqrstuvwxyz"],
+      letters: [...'abcdefghijklmnopqrstuvwxyz'],
       lettersComparison: {},
     };
   },
   actions: {
     initGame() {
       this.currentGuess = 0;
-      this.inputWord = "";
-      this.guesses = Array(this.rows).fill("");
-      this.guessesComparison = Array(this.rows).fill("");
+      this.inputWord = '';
+      this.guesses = Array(this.rows).fill('');
+      this.guessesComparison = Array(this.rows).fill('');
       this.isGameWon = false;
       this.isGameLost = false;
 
       for (const letter of this.letters) {
-        this.lettersComparison[letter] = "";
+        this.lettersComparison[letter] = '';
       }
     },
     changeGameMode(newMode) {
@@ -38,7 +38,7 @@ export const useGameStore = defineStore("game", {
 
       this.initGame();
 
-      if (newMode === "random") {
+      if (newMode === 'random') {
         this.word = randomWord();
       } else {
         this.word = todayWord();
@@ -58,27 +58,27 @@ export const useGameStore = defineStore("game", {
       const statisticsStore = useStatisticsStore();
 
       if (this.inputWord.length !== this.letterLimit) {
-        toast("Not enough letters!");
+        toast('Not enough letters!');
         return;
       }
 
-      if (this.currentGameMode === "custom") {
+      if (this.currentGameMode === 'custom') {
         if (!checkWord(this.inputWord, this.word)) {
-          toast("Not a valid word!");
+          toast('Not a valid word!');
           return;
         }
       } else {
         if (!checkWord(this.inputWord)) {
-          toast("Not a valid word!");
+          toast('Not a valid word!');
           return;
         }
       }
 
       const guess = this.inputWord;
       const target = this.word;
-      this.inputWord = "";
+      this.inputWord = '';
 
-      const result = Array(this.letterLimit).fill("N");
+      const result = Array(this.letterLimit).fill('N');
       const targetLetterCount = {};
 
       // Count the letters in the target word
@@ -89,43 +89,39 @@ export const useGameStore = defineStore("game", {
       // First pass: find correct letters (Y)
       for (let i = 0; i < this.letterLimit; i++) {
         if (guess[i] === target[i]) {
-          result[i] = "Y";
+          result[i] = 'Y';
           targetLetterCount[guess[i]]--;
-          this.setLetterComparison(target[i], "Y");
+          this.setLetterComparison(target[i], 'Y');
         }
       }
 
       // Second pass: find misplaced letters (X)
       for (let i = 0; i < this.letterLimit; i++) {
-        if (
-          result[i] !== "Y" &&
-          target.includes(guess[i]) &&
-          targetLetterCount[guess[i]] > 0
-        ) {
-          result[i] = "X";
+        if (result[i] !== 'Y' && target.includes(guess[i]) && targetLetterCount[guess[i]] > 0) {
+          result[i] = 'X';
           targetLetterCount[guess[i]]--;
-          this.setLetterComparison(guess[i], "X");
+          this.setLetterComparison(guess[i], 'X');
         }
       }
 
       for (let i = 0; i < result.length; i++) {
         const letter = result[i];
 
-        if (letter == "N") {
-          this.setLetterComparison(guess[i], "N");
+        if (letter === 'N') {
+          this.setLetterComparison(guess[i], 'N');
         }
       }
 
       this.guesses[this.currentGuess] = guess;
-      this.guessesComparison[this.currentGuess] = result.join("");
+      this.guessesComparison[this.currentGuess] = result.join('');
 
       if (guess === target) {
-        statisticsStore.pushToStatistics(this.currentGameMode, "win");
+        statisticsStore.pushToStatistics(this.currentGameMode, 'win');
         setTimeout(() => {
           this.isGameWon = true;
         }, 1000);
       } else if (this.currentGuess === this.rows - 1) {
-        statisticsStore.pushToStatistics(this.currentGameMode, "lose");
+        statisticsStore.pushToStatistics(this.currentGameMode, 'lose');
         this.isGameLost = true;
       }
 
@@ -133,9 +129,9 @@ export const useGameStore = defineStore("game", {
     },
     setLetterComparison(letter, match) {
       if (
-        (match === "X" && this.lettersComparison[letter] === "Y") ||
-        (match === "N" && this.lettersComparison[letter] === "X") ||
-        (match === "N" && this.lettersComparison[letter] === "Y")
+        (match === 'X' && this.lettersComparison[letter] === 'Y') ||
+        (match === 'N' && this.lettersComparison[letter] === 'X') ||
+        (match === 'N' && this.lettersComparison[letter] === 'Y')
       ) {
         return;
       }

@@ -1,18 +1,18 @@
 <script setup>
-import { IconBackspace, IconCornerDownLeft } from "@tabler/icons-vue";
+import { IconBackspace, IconCornerDownLeft } from '@tabler/icons-vue';
 
-import KeyboardButton from "@/components/keyboard/KeyboardButton.vue";
+import KeyboardButton from '@/components/keyboard/KeyboardButton.vue';
 
+import { useGameStore } from '@/stores/game';
 // Stores
-import { useSettingsStore } from "@/stores/settings";
-import { useGameStore } from "@/stores/game";
+import { useSettingsStore } from '@/stores/settings';
 const settingsStore = useSettingsStore();
 const gameStore = useGameStore();
 
 const keyboard = [
-  ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
-  ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
-  ["z", "x", "c", "v", "b", "n", "m"],
+  ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+  ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+  ['z', 'x', 'c', 'v', 'b', 'n', 'm'],
 ];
 </script>
 
@@ -45,9 +45,9 @@ const keyboard = [
         @click="gameStore.addLetter(key)"
         :class="{
           '!text-white': gameStore.lettersComparison[key],
-          '!bg-green': gameStore.lettersComparison[key] == 'Y',
-          '!bg-yellow': gameStore.lettersComparison[key] == 'X',
-          '!bg-gray': gameStore.lettersComparison[key] == 'N',
+          '!bg-green': gameStore.lettersComparison[key] === 'Y',
+          '!bg-yellow': gameStore.lettersComparison[key] === 'X',
+          '!bg-gray': gameStore.lettersComparison[key] === 'N',
         }"
         v-for="key in row"
         :key="key"

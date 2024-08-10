@@ -1,5 +1,5 @@
 <script setup>
-import { IconX } from "@tabler/icons-vue";
+import { IconX } from '@tabler/icons-vue';
 </script>
 
 <template>

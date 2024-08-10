@@ -1,4 +1,4 @@
-import allWords from "@/allWords.json";
+import allWords from '@/allWords.json';
 
 export const todayWord = () => {
   const currentDate = new Date();
@@ -9,9 +9,9 @@ export const todayWord = () => {
 
   if (dayIndex > allWords.length) {
     return allWords[dayIndex - allWords.length];
-  } else {
-    return allWords[dayIndex];
   }
+
+  return allWords[dayIndex];
 };
 
 export const randomWord = () => {

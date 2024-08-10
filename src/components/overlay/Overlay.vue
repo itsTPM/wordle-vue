@@ -1,7 +1,7 @@
 <script setup>
-import OverlayButton from "@/components/overlay/OverlayButton.vue";
+import OverlayButton from '@/components/overlay/OverlayButton.vue';
 
-import { useGameStore } from "@/stores/game";
+import { useGameStore } from '@/stores/game';
 const gameStore = useGameStore();
 </script>
 

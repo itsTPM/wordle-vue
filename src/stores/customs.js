@@ -1,10 +1,10 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-export const useCustomsStore = defineStore("customs", {
+export const useCustomsStore = defineStore('customs', {
   state: () => {
     return {
-      customWord: "",
-      customLink: "",
+      customWord: '',
+      customLink: '',
     };
   },
   actions: {
@@ -13,8 +13,8 @@ export const useCustomsStore = defineStore("customs", {
       this.customLink = `${window.location.origin}/?word=${b64Word}`;
     },
     resetCustoms() {
-      this.customWord = "";
-      this.customLink = "";
+      this.customWord = '';
+      this.customLink = '';
     },
   },
 });

@@ -1,36 +1,24 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import { Toaster, toast } from "vue-sonner";
-import {
-  IconMoon,
-  IconSun,
-  IconSettings,
-  IconHelp,
-  IconChartBar,
-} from "@tabler/icons-vue";
+import { IconChartBar, IconHelp, IconMoon, IconSettings, IconSun } from '@tabler/icons-vue';
+import { onMounted, ref } from 'vue';
+import { Toaster, toast } from 'vue-sonner';
 
-import Keyboard from "@/components/keyboard/Keyboard.vue";
-import {
-  Dialog,
-  DialogClose,
-  DialogTitle,
-  DialogDescription,
-  DialogContent,
-} from "@/components/dialog";
-import Switch from "@/components/Switch.vue";
-import Button from "@/components/Button.vue";
-import Input from "@/components/Input.vue";
-import DebugInfo from "@/components/DebugInfo.vue";
-import WordleVueLogo from "../public/logo-text.svg?component";
-import Overlay from "./components/overlay/Overlay.vue";
+import Button from '@/components/Button.vue';
+import DebugInfo from '@/components/DebugInfo.vue';
+import Input from '@/components/Input.vue';
+import Switch from '@/components/Switch.vue';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/dialog';
+import Keyboard from '@/components/keyboard/Keyboard.vue';
+import WordleVueLogo from '../public/logo-text.svg?component';
+import Overlay from './components/overlay/Overlay.vue';
 
 // Stores
-import { useStatisticsStore } from "@/stores/statistics";
-import { useSettingsStore } from "./stores/settings";
-import { useThemeStore } from "./stores/theme";
-import { useGameStore } from "./stores/game";
-import { useCustomsStore } from "./stores/customs";
-import { useGuideStore } from "./stores/guide";
+import { useStatisticsStore } from '@/stores/statistics';
+import { useCustomsStore } from './stores/customs';
+import { useGameStore } from './stores/game';
+import { useGuideStore } from './stores/guide';
+import { useSettingsStore } from './stores/settings';
+import { useThemeStore } from './stores/theme';
 const statisticsStore = useStatisticsStore();
 const settingsStore = useSettingsStore();
 const themeStore = useThemeStore();
@@ -43,19 +31,14 @@ const guideDialogOpen = ref(false);
 async function copyToClipboard(text) {
   try {
     await navigator.clipboard.writeText(text);
-    toast("Copied to clipboard!", { type: "success" });
+    toast('Copied to clipboard!', { type: 'success' });
   } catch (err) {
-    toast("Cannot copy", { type: "error" });
+    toast('Cannot copy', { type: 'error' });
   }
 }
 
-window.addEventListener("keydown", (e) => {
-  if (
-    gameStore.isGameWon ||
-    gameStore.isGameLost ||
-    settingsStore.onlyOnscreenInput.value
-  )
-    return;
+window.addEventListener('keydown', (e) => {
+  if (gameStore.isGameWon || gameStore.isGameLost || settingsStore.onlyOnscreenInput.value) return;
 
   const key = e.key;
 
@@ -65,10 +48,10 @@ window.addEventListener("keydown", (e) => {
   if (isLetter) {
     gameStore.addLetter(key);
   } else {
-    if (key === "Backspace") {
+    if (key === 'Backspace') {
       gameStore.removeLastLetter();
     }
-    if (key === "Enter") {
+    if (key === 'Enter') {
       gameStore.makeGuess();
     }
   }
@@ -86,39 +69,36 @@ onMounted(() => {
   }
 
   // Check if current url has statistics param & set statistics based on it
-  if (urlParams.has("statistics") && urlParams.get("statistics") !== "") {
+  if (urlParams.has('statistics') && urlParams.get('statistics') !== '') {
     try {
-      statisticsStore.$state = JSON.parse(urlParams.get("statistics"));
-      toast("Statistics imported successfully", { type: "success" });
+      statisticsStore.$state = JSON.parse(urlParams.get('statistics'));
+      toast('Statistics imported successfully', { type: 'success' });
     } catch (e) {
-      toast("Error importing statistics", { type: "error" });
+      toast('Error importing statistics', { type: 'error' });
     }
   }
 
   // Check if current url has word param & set game mode based on it
-  if (urlParams.has("word") && urlParams.get("word") !== "") {
-    gameStore.changeGameMode("custom");
+  if (urlParams.has('word') && urlParams.get('word') !== '') {
+    gameStore.changeGameMode('custom');
     try {
-      gameStore.word = atob(urlParams.get("word"));
+      gameStore.word = atob(urlParams.get('word'));
     } catch (e) {
-      toast(
-        "Error decoding the custom word parameter. Game mode switched to word of the day",
-        {
-          type: "error",
-          duration: 3000,
-        }
-      );
+      toast('Error decoding the custom word parameter. Game mode switched to word of the day', {
+        type: 'error',
+        duration: 3000,
+      });
 
       gameStore.changeGameMode(settingsStore.defaultGameMode.value);
       return;
     }
-    if (atob(urlParams.get("word")).length !== gameStore.letterLimit) {
+    if (atob(urlParams.get('word')).length !== gameStore.letterLimit) {
       toast(
         `Custom word must be exactly ${gameStore.letterLimit} letters long. Game mode switched to word of the day`,
         {
-          type: "error",
+          type: 'error',
           duration: 3000,
-        }
+        },
       );
 
       gameStore.changeGameMode(settingsStore.defaultGameMode.value);
@@ -130,7 +110,7 @@ onMounted(() => {
 
 // Disable double tap to zoom on iOS Safari
 // https://stackoverflow.com/a/73334551/
-document.ondblclick = function (e) {
+document.ondblclick = (e) => {
   e.preventDefault();
 };
 </script>

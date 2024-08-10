@@ -1,9 +1,9 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-export const useThemeStore = defineStore("theme", {
+export const useThemeStore = defineStore('theme', {
   state: () => {
     return {
-      currentTheme: "light",
+      currentTheme: 'light',
       themeWasDetected: false,
     };
   },
@@ -11,20 +11,20 @@ export const useThemeStore = defineStore("theme", {
     toggleTheme(newTheme) {
       if (newTheme) {
         this.currentTheme = newTheme;
-        if (newTheme === "light") {
-          document.body.classList.remove("dark");
+        if (newTheme === 'light') {
+          document.body.classList.remove('dark');
         } else {
-          document.body.classList.add("dark");
+          document.body.classList.add('dark');
         }
         return;
       }
 
-      if (this.currentTheme === "light") {
-        this.currentTheme = "dark";
-        document.body.classList.add("dark");
+      if (this.currentTheme === 'light') {
+        this.currentTheme = 'dark';
+        document.body.classList.add('dark');
       } else {
-        this.currentTheme = "light";
-        document.body.classList.remove("dark");
+        this.currentTheme = 'light';
+        document.body.classList.remove('dark');
       }
     },
 
@@ -36,13 +36,10 @@ export const useThemeStore = defineStore("theme", {
       }
 
       // Otherwise, detect the system/browser theme
-      if (
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      ) {
-        this.toggleTheme("dark");
+      if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
+        this.toggleTheme('dark');
       } else {
-        this.toggleTheme("light");
+        this.toggleTheme('light');
       }
 
       this.themeWasDetected = true;
