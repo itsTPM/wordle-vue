@@ -26,6 +26,8 @@ export const useGameStore = defineStore("game", {
       this.inputWord = "";
       this.guesses = Array(this.rows).fill("");
       this.guessesComparison = Array(this.rows).fill("");
+      this.isGameWon = false;
+      this.isGameLost = false;
 
       for (const letter of this.letters) {
         this.lettersComparison[letter] = "";
@@ -112,13 +114,11 @@ export const useGameStore = defineStore("game", {
 
       if (guess === target) {
         statisticsStore.pushToStatistics(this.currentGameMode, "win");
-        toast("You won!", { type: "success" });
         setTimeout(() => {
           this.isGameWon = true;
         }, 1000);
       } else if (this.currentGuess === this.rows - 1) {
         statisticsStore.pushToStatistics(this.currentGameMode, "lose");
-        toast("You lost! The word was " + target, { type: "error" });
         this.isGameLost = true;
       }
 
