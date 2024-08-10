@@ -30,8 +30,10 @@ const statisticsStore = useStatisticsStore();
 import { useSettingsStore } from "./stores/settings";
 const settingsStore = useSettingsStore();
 
+import { useThemeStore } from "./stores/theme";
+const themeStore = useThemeStore();
+
 // App state
-const theme = ref("light");
 
 // Game state
 const letterLimit = 5;
@@ -55,17 +57,6 @@ guessesComparison.value = Array(rows).fill("");
 for (const letter of letters) {
   lettersComparison.value[letter] = "";
 }
-
-const toggleTheme = () => {
-  if (theme.value === "light") {
-    theme.value = "dark";
-    document.body.classList.add("dark");
-  } else {
-    theme.value = "light";
-    document.body.classList.remove("dark");
-  }
-  localStorage.setItem("theme", theme.value);
-};
 
 const changeMode = (newMode) => {
   currentMode.value = newMode;
@@ -226,6 +217,8 @@ const makeGuess = () => {
 };
 
 onMounted(() => {
+  themeStore.detectSystemTheme();
+
   // Check is user seen guide
   const seenGuide = window.localStorage.getItem("seenGuide");
 
@@ -233,25 +226,6 @@ onMounted(() => {
     window.localStorage.setItem("seenGuide", "true");
 
     guideDialogOpen.value = true;
-  }
-
-  // Theme detection
-  const localStorageTheme = window.localStorage.getItem("theme");
-
-  if (localStorageTheme) {
-    theme.value = localStorageTheme;
-    document.body.classList.add(localStorageTheme);
-  } else {
-    if (
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-    ) {
-      window.localStorage.setItem("theme", "dark");
-      theme.value = "dark";
-      document.body.classList.add("dark");
-    } else {
-      window.localStorage.setItem("theme", "light");
-    }
   }
 
   // Check if current url has word param & set game mode based on it
@@ -299,7 +273,12 @@ document.ondblclick = function (e) {
 </script>
 
 <template>
-  <Toaster position="top-center" :expand="true" :duration="1500" :theme />
+  <Toaster
+    position="top-center"
+    :expand="true"
+    :duration="1500"
+    :theme="themeStore.currentTheme"
+  />
 
   <div
     class="absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-[rgba(0,0,0,0.25)] z-10 backdrop-blur-md transition-all duration-300 flex items-center justify-center"
@@ -320,15 +299,17 @@ document.ondblclick = function (e) {
         <Button
           class="w-12 aspect-square overflow-clip hover:bg-secondary text-black/75 dark:text-white/75 relative"
           :aria-label="
-            theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'
+            themeStore.currentTheme === 'light'
+              ? 'Switch to dark theme'
+              : 'Switch to light theme'
           "
-          @click="toggleTheme"
+          @click="themeStore.toggleTheme()"
         >
           <IconMoon
             class="w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
             stroke-width="2"
             aria-hidden="true"
-            v-if="theme === 'light'"
+            v-if="themeStore.currentTheme === 'light'"
           ></IconMoon>
           <IconSun
             class="w-8 aspect-square absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
