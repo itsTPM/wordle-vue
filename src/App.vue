@@ -334,17 +334,7 @@ document.ondblclick = function (e) {
   <main
     class="flex flex-col max-h-xs:gap-2 gap-4 items-center w-full pt-2 xs:py-4 relative"
   >
-    <DebugInfo
-      :word="gameStore.word"
-      :currentGameMode="gameStore.currentGameMode"
-      :inputWord="gameStore.inputWord"
-      :currentGuess="gameStore.currentGuess"
-      :guesses="gameStore.guesses"
-      :guessesComparison="gameStore.guessesComparison"
-      :isGameWon="gameStore.isGameWon"
-      :isGameLost="gameStore.isGameLost"
-      v-if="settingsStore.showDebugInfo.value"
-    ></DebugInfo>
+    <DebugInfo v-if="settingsStore.showDebugInfo.value"></DebugInfo>
 
     <div class="flex">
       <Dialog>
