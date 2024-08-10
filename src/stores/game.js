@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { todayWord, randomWord, checkWord } from "@/words.js";
+import { useStatisticsStore } from "./statistics.js";
 import { toast } from "vue-sonner";
 
 export const useGameStore = defineStore("game", {
@@ -52,76 +53,76 @@ export const useGameStore = defineStore("game", {
       this.guesses[this.currentGuess] = this.inputWord;
     },
     makeGuess() {
-      {
-        if (this.inputWord.length !== this.letterLimit) {
-          toast("Not enough letters!");
-          return;
-        }
+      const statisticsStore = useStatisticsStore();
 
-        if (!checkWord(this.inputWord)) {
-          toast("Not a valid word!");
-          return;
-        }
-
-        const guess = this.inputWord;
-        const target = this.word;
-        this.inputWord = "";
-
-        const result = Array(this.letterLimit).fill("N");
-        const targetLetterCount = {};
-
-        // Count the letters in the target word
-        for (const letter of target) {
-          targetLetterCount[letter] = (targetLetterCount[letter] || 0) + 1;
-        }
-
-        // First pass: find correct letters (Y)
-        for (let i = 0; i < this.letterLimit; i++) {
-          if (guess[i] === target[i]) {
-            result[i] = "Y";
-            targetLetterCount[guess[i]]--;
-            this.setLetterComparison(target[i], "Y");
-          }
-        }
-
-        // Second pass: find misplaced letters (X)
-        for (let i = 0; i < this.letterLimit; i++) {
-          if (
-            result[i] !== "Y" &&
-            target.includes(guess[i]) &&
-            targetLetterCount[guess[i]] > 0
-          ) {
-            result[i] = "X";
-            targetLetterCount[guess[i]]--;
-            this.setLetterComparison(guess[i], "X");
-          }
-        }
-
-        for (let i = 0; i < result.length; i++) {
-          const letter = result[i];
-
-          if (letter == "N") {
-            this.setLetterComparison(guess[i], "N");
-          }
-        }
-
-        this.guesses[this.currentGuess] = guess;
-        this.guessesComparison[this.currentGuess] = result.join("");
-
-        if (guess === target) {
-          statisticsStore.pushToStatistics(this.currentMode, "win");
-          toast("You won!", { type: "success" });
-          setTimeout(() => {
-            this.isGameWon = true;
-          }, 1000);
-        } else if (this.currentGuess === this.rows - 1) {
-          statisticsStore.pushToStatistics(this.currentMode, "lose");
-          toast("You lost! The word was " + target, { type: "error" });
-          this.isGameLost = true;
-        }
-
-        this.currentGuess++;
+      if (this.inputWord.length !== this.letterLimit) {
+        toast("Not enough letters!");
+        return;
       }
+
+      if (!checkWord(this.inputWord)) {
+        toast("Not a valid word!");
+        return;
+      }
+
+      const guess = this.inputWord;
+      const target = this.word;
+      this.inputWord = "";
+
+      const result = Array(this.letterLimit).fill("N");
+      const targetLetterCount = {};
+
+      // Count the letters in the target word
+      for (const letter of target) {
+        targetLetterCount[letter] = (targetLetterCount[letter] || 0) + 1;
+      }
+
+      // First pass: find correct letters (Y)
+      for (let i = 0; i < this.letterLimit; i++) {
+        if (guess[i] === target[i]) {
+          result[i] = "Y";
+          targetLetterCount[guess[i]]--;
+          this.setLetterComparison(target[i], "Y");
+        }
+      }
+
+      // Second pass: find misplaced letters (X)
+      for (let i = 0; i < this.letterLimit; i++) {
+        if (
+          result[i] !== "Y" &&
+          target.includes(guess[i]) &&
+          targetLetterCount[guess[i]] > 0
+        ) {
+          result[i] = "X";
+          targetLetterCount[guess[i]]--;
+          this.setLetterComparison(guess[i], "X");
+        }
+      }
+
+      for (let i = 0; i < result.length; i++) {
+        const letter = result[i];
+
+        if (letter == "N") {
+          this.setLetterComparison(guess[i], "N");
+        }
+      }
+
+      this.guesses[this.currentGuess] = guess;
+      this.guessesComparison[this.currentGuess] = result.join("");
+
+      if (guess === target) {
+        statisticsStore.pushToStatistics(this.currentGameMode, "win");
+        toast("You won!", { type: "success" });
+        setTimeout(() => {
+          this.isGameWon = true;
+        }, 1000);
+      } else if (this.currentGuess === this.rows - 1) {
+        statisticsStore.pushToStatistics(this.currentGameMode, "lose");
+        toast("You lost! The word was " + target, { type: "error" });
+        this.isGameLost = true;
+      }
+
+      this.currentGuess++;
     },
     setLetterComparison(letter, match) {
       if (

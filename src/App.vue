@@ -336,7 +336,7 @@ document.ondblclick = function (e) {
   >
     <DebugInfo
       :word="gameStore.word"
-      :currentMode="gameStore.currentGameMode"
+      :currentGameMode="gameStore.currentGameMode"
       :inputWord="gameStore.inputWord"
       :currentGuess="gameStore.currentGuess"
       :guesses="gameStore.guesses"
@@ -373,13 +373,13 @@ document.ondblclick = function (e) {
             <div class="flex gap-2 py-6">
               <Button
                 class="bg-secondary px-3 py-2 disabled:text-secondary disabled:bg-primary hover:bg-secondary-hover"
-                :disabled="currentMode === 'wordOfTheDay'"
+                :disabled="gameStore.currentGameMode === 'wordOfTheDay'"
                 @click="changeMode('wordOfTheDay')"
                 >Word of the day</Button
               >
               <Button
                 class="bg-secondary px-3 py-2 disabled:text-secondary disabled:bg-primary hover:bg-secondary-hover"
-                :disabled="currentMode === 'random'"
+                :disabled="gameStore.currentGameMode === 'random'"
                 @click="changeMode('random')"
                 >Random</Button
               >
