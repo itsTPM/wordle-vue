@@ -148,8 +148,12 @@ const removeLastLetter = () => {
 };
 
 const setLetterComparison = (letter, match) => {
-  if (match === "X" && lettersComparison.value[letter] === "Y") return;
-
+  if (
+    (match === "X" && lettersComparison.value[letter] === "Y") ||
+    (match === "N" && lettersComparison.value[letter] === "X") ||
+    (match === "N" && lettersComparison.value[letter] === "Y")
+  )
+    return;
   lettersComparison.value[letter] = match;
 };
 
