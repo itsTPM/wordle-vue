@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted } from "vue";
 import { Toaster, toast } from "vue-sonner";
 import {
   IconMoon,
@@ -27,22 +27,11 @@ import { todayWord, randomWord, checkWord } from "@/words.js";
 import { useStatisticsStore } from "@/stores/statistics";
 const statisticsStore = useStatisticsStore();
 
+import { useSettingsStore } from "./stores/settings";
+const settingsStore = useSettingsStore();
+
 // App state
 const theme = ref("light");
-const settings = ref({
-  showDebugInfo: {
-    title: "Show debug info",
-    value: false,
-  },
-  onlyOnscreenInput: {
-    title: "Onscreen keyboard input only",
-    value: false,
-  },
-  swapKeyboardButtons: {
-    title: "Swap 'Enter' and 'Backspace' buttons",
-    value: false,
-  },
-});
 
 // Game state
 const letterLimit = 5;
@@ -142,7 +131,7 @@ window.addEventListener("keydown", (e) => {
   if (
     isGameWon.value ||
     isGameLost.value ||
-    settings.value.onlyOnscreenInput.value
+    settingsStore.onlyOnscreenInput.value
   )
     return;
 
@@ -237,17 +226,6 @@ const makeGuess = () => {
 };
 
 onMounted(() => {
-  // Load settings from localStorage
-  for (const setting in settings.value) {
-    const settingValue = window.localStorage.getItem(setting.title);
-
-    if (settingValue) {
-      settings.value[setting] = settingValue === "true";
-    } else {
-      window.localStorage.setItem(setting, settings.value[setting].value);
-    }
-  }
-
   // Check is user seen guide
   const seenGuide = window.localStorage.getItem("seenGuide");
 
@@ -275,17 +253,6 @@ onMounted(() => {
       window.localStorage.setItem("theme", "light");
     }
   }
-
-  // Set a watcher for settings changes to save it to localStorage
-  watch(
-    settings,
-    () => {
-      for (const setting in settings.value) {
-        window.localStorage.setItem(setting, settings.value[setting].value);
-      }
-    },
-    { deep: true }
-  );
 
   // Check if current url has word param & set game mode based on it
   let urlParams = new URLSearchParams(window.location.search);
@@ -467,7 +434,10 @@ document.ondblclick = function (e) {
               <DialogClose></DialogClose>
               <DialogTitle>Settings</DialogTitle>
               <ul class="flex flex-col gap-6 py-6">
-                <li class="flex gap-2" v-for="(setting, keyName) in settings">
+                <li
+                  class="flex gap-2"
+                  v-for="(setting, keyName) in settingsStore.$state"
+                >
                   <Switch :id="keyName" v-model="setting.value"></Switch>
                   <label :for="keyName"> {{ setting.title }} </label>
                 </li>
@@ -541,7 +511,7 @@ document.ondblclick = function (e) {
       :guessesComparison
       :isGameWon
       :isGameLost
-      v-if="settings.showDebugInfo.value"
+      v-if="settingsStore.showDebugInfo.value"
     ></DebugInfo>
 
     <div class="flex">
@@ -695,7 +665,7 @@ document.ondblclick = function (e) {
 
     <Keyboard
       :lettersComparison
-      :swapKeyboardButtons="settings.swapKeyboardButtons.value"
+      :swapKeyboardButtons="settingsStore.swapKeyboardButtons.value"
       @addLetter="(letter) => addLetter(letter)"
       @makeGuess="makeGuess"
       @removeLastLetter="removeLastLetter"
