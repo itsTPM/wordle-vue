@@ -44,6 +44,7 @@ const keyboard = [
       <KeyboardButton
         @click="gameStore.addLetter(key)"
         :class="{
+          '!text-white': gameStore.lettersComparison[key],
           '!bg-green': gameStore.lettersComparison[key] == 'Y',
           '!bg-yellow': gameStore.lettersComparison[key] == 'X',
           '!bg-gray': gameStore.lettersComparison[key] == 'N',
