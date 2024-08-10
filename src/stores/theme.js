@@ -28,12 +28,14 @@ export const useThemeStore = defineStore("theme", {
       }
     },
 
-    detectSystemTheme() {
+    initTheme() {
+      // If the theme was already detected or user has set a theme, use it
       if (this.themeWasDetected) {
         this.toggleTheme(this.currentTheme);
         return;
       }
 
+      // Otherwise, detect the system/browser theme
       if (
         window.matchMedia &&
         window.matchMedia("(prefers-color-scheme: dark)").matches

@@ -74,7 +74,7 @@ window.addEventListener("keydown", (e) => {
 });
 
 onMounted(() => {
-  themeStore.detectSystemTheme();
+  themeStore.initTheme();
 
   // Check is user seen guide
   if (!guideStore.seenGuide) {
