@@ -298,7 +298,7 @@ document.ondblclick = (e) => {
       <Dialog>
         <template #trigger>
           <r-DialogTrigger
-            class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs transition-colors text-center hover:bg-secondary-hover select-none"
+            class="uppercase px-6 py-2 bg-secondary text-secondary-foreground font-bold text-xs motion-safe:transition-colors text-center hover:bg-secondary-hover select-none"
             type="button"
             as="button"
             aria-label="Open game mode dialog">
@@ -390,7 +390,7 @@ document.ondblclick = (e) => {
               <p class="text-xs text-black/50 dark:text-white/50 mt-2">
                 <Button
                   @click="customsStore.resetCustoms"
-                  class="underline hover:text-secondary-hover hover:underline-offset-4 underline-offset-2 transition-all">
+                  class="underline hover:text-secondary-hover hover:underline-offset-4 underline-offset-2 motion-safe:transition-all">
                   Click here
                 </Button>
                 to reset this dialog and make link for another word
@@ -405,7 +405,7 @@ document.ondblclick = (e) => {
       <div class="w-full h-full flex max-h-xs:gap-1 gap-2" v-for="row in gameStore.rows">
         <span
           v-for="letter in gameStore.letterLimit"
-          class="bg-gray-50 dark:bg-white/5 border-2 h-full aspect-square flex items-center justify-center text-center text-3xl uppercase font-bold transition-all duration-300 w-full"
+          class="bg-gray-50 dark:bg-white/5 border-2 h-full aspect-square flex items-center justify-center text-center text-3xl uppercase font-bold motion-safe:transition-all motion-safe:duration-300 w-full"
           :class="[
             gameStore.guessesComparison[row - 1]?.charAt(letter - 1) === 'N'
               ? ['!bg-gray', 'text-white', 'border-gray']
@@ -416,7 +416,7 @@ document.ondblclick = (e) => {
             gameStore.guessesComparison[row - 1]?.charAt(letter - 1) === 'X'
               ? ['!bg-yellow', 'text-white', 'border-yellow']
               : '',
-            gameStore.guesses[row - 1]?.charAt(letter - 1) ? ['animate-typing'] : '',
+            gameStore.guesses[row - 1]?.charAt(letter - 1) ? ['motion-safe:animate-typing'] : '',
           ]">
           {{ gameStore.guesses[row - 1]?.charAt(letter - 1) }}
         </span>

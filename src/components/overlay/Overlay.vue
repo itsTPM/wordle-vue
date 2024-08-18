@@ -7,7 +7,7 @@ const gameStore = useGameStore();
 
 <template>
   <div
-    class="absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-[rgba(0,0,0,0.5)] z-10 backdrop-blur-xl transition-all duration-300 flex flex-col items-center justify-center"
+    class="absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-[rgba(0,0,0,0.5)] z-10 backdrop-blur-xl motion-safe:transition-all motion-safe:duration-300 flex flex-col items-center justify-center"
     :class="
       gameStore.isGameWon || gameStore.isGameLost ? ['translate-y-0', 'visible'] : ['-translate-y-full', 'invisible']
     ">
